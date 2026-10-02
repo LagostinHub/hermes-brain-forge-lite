@@ -28,18 +28,24 @@ redundante quando voce ja esta aqui.
 
 ## Os 8 tiers
 
-| Tier | Skills | Peso | O que é |
+| Tier | Skills | Peso | O que e |
 |---|---|---|---|
-| T0 regras-gerais | 9 | 37 KB | `/ponytail` `/i-have-adhd` `/caveman` + derivados. **Sempre ativas.** |
-| T1 spec-fluxo | 10 | 45 KB | openspec-propose, grill-with-docs, to-spec, to-tickets, implement, tdd, code-review |
-| T2 navegacao-fase | 8 | 50,6 KB | ask-matt, handoff, wait-what, prototype, research, wayfinder |
-| T3 infra-agente | 5 | 139,9 KB | hermes-agent, hermes-skill-install, hermes-provider-config, hermes-mcp-troubleshoot, wizard |
-| T4 qualidade-debug | 8 | 99,1 KB | systematic-debugging, diagnosing-bugs, domain-modeling, careful, guard |
-| T5 git-github | 7 | 88,6 KB | github-*, git-commit, worktrees |
-| T6a vertical-dev | 6 | 426,7 KB | frontend-design, accessibility, vercel-react-* |
-| T6b vertical-video | 14 | 2.856,6 KB | cinema-geral-decisions, film-decupage, film-editing + cluster Remotion (12) |
-| **TOTAL** | **67** | **3,66 MB** |
-| MOCs | 12 | 281,6 KB | knowledge de consulta |
+| T0 regras-gerais | 9 | 37.0 KB | `/ponytail` `/i-have-adhd` `/caveman` + derivados. **Sempre ativas.** |
+| T1 spec-fluxo | 10 | 45.2 KB | openspec-propose, grill-with-docs, to-spec, to-tickets, implement, tdd, code-review |
+| T2 navegacao-fase | 8 | 50.6 KB | ask-matt, handoff, wait-what, prototype, research, wayfinder |
+| T3 infra-agente | 5 | 144.9 KB | hermes-agent, hermes-skill-install, hermes-provider-config, hermes-mcp-troubleshoot, wizard |
+| T4 qualidade-debug | 8 | 99.1 KB | systematic-debugging, diagnosing-bugs, domain-modeling, careful, guard |
+| T5 git-github | 7 | 88.6 KB | github-*, git-commit, worktrees |
+| T6a vertical-dev | 6 | 426.7 KB | frontend-design, accessibility, vercel-react-* |
+| T6b vertical-video | 14 | 2.88 MB | cinema-geral-decisions, film-decupage, film-editing + cluster Remotion |
+| **TOTAL** | **67** | **3.75 MB** | |
+| MOCs | 12 | 281.6 KB | knowledge de consulta |
+
+> **Sobre o peso:** T6b (video/Remotion) sozinho e 2,88 MB — 77% do payload. Se
+> sua equipe nao trabalha com video, dá para remover esse tier inteiro e o
+> install fica com ~0,9 MB sem quebrar nenhuma dependencia. Os outros 7 tiers somam
+> 53 skills.
+
 ## Sanitizacao
 
 Este payload e publicado. Ele foi limpo de:
