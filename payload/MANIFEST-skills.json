@@ -304,7 +304,7 @@
    "path": "payload/skills/infra-agente/hermes-agent",
    "sha256": "605e2bc15c58f43e",
    "files": 3,
-   "bytes": 72377,
+   "bytes": 72114,
    "origin": "skills/hermes-tree/autonomous-ai-agents/hermes-agent",
    "sanitized": true
   },
@@ -726,8 +726,8 @@
    "name": "remotion-video-production",
    "path": "payload/skills/vertical-video/remotion-video-production",
    "sha256": "2f35843b5f42eeb3",
-   "files": 10,
-   "bytes": 51880,
+   "files": 11,
+   "bytes": 52335,
    "origin": "skills/user-level/remotion-video-production",
    "sanitized": true,
    "added": "router-dependency"
@@ -843,5 +843,19 @@
    "hermes-agent: nota de escopo_added (scripts/run_tests.sh pertence ao repo upstream, nao ao payload)",
    "5 arquivos trazidos do forge: qc-pipeline.md, composition.md, scenes.md, component-library.tsx, davinci-resolve-mcp.md"
   ]
+ },
+ "vault_template": {
+  "files": 167,
+  "bytes_kb": 858,
+  "zonas": 24,
+  "sanitized": true,
+  "notas_omitidas": [
+   "57-tasteforge-integracao (depende de 5 notas fora do escopo)",
+   "52.23/52.24-openviking (ferramenta nao distribuida, restauradas sanitizadas)"
+  ],
+  "wikilinks_quebrados": {
+   "forge_original": 85,
+   "lite": 78
+  }
  }
 }

@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "name": "<CLIENTE> — Design DNA",
+    "description": "Brand identity do cliente <CLIENTE>. Preencher via skill design-dna (analyze referências → JSON).",
+    "source_references": [],
+    "created_at": "<DATA>"
+  },
+  "design_system": {
+    "color": {
+      "palette_type": "",
+      "primary": { "hex": "", "role": "" },
+      "secondary": { "hex": "", "role": "" },
+      "accent": { "hex": "", "role": "" },
+      "neutral": { "scale": [], "usage": "" },
+      "semantic": { "success": "", "warning": "", "error": "", "info": "" },
+      "surface": { "background": "", "card": "", "elevated": "" },
+      "contrast_strategy": ""
+    },
+    "typography": {
+      "type_scale": {
+        "display": { "size": "", "weight": "", "line_height": "", "tracking": "" },
+        "heading_1": { "size": "", "weight": "", "line_height": "", "tracking": "" },
+        "body": { "size": "", "weight": "", "line_height": "", "tracking": "" },
+        "caption": { "size": "", "weight": "", "line_height": "", "tracking": "" }
+      },
+      "font_families": { "heading": "", "body": "", "mono": "" },
+      "font_style_notes": ""
+    },
+    "spacing": { "base_unit": "8px", "scale": [], "content_density": "", "section_rhythm": "" },
+    "layout": { "grid_system": "", "max_content_width": "", "columns": 1, "gutter": "", "breakpoints": [], "alignment_tendency": "" },
+    "shape": { "border_radius": { "small": "", "medium": "", "large": "", "pill": "" }, "border_usage": "", "divider_style": "" },
+    "elevation": { "shadow_style": "", "levels": { "low": "", "medium": "", "high": "" }, "depth_cues": "" },
+    "iconography": { "style": "", "stroke_weight": "", "size_scale": [], "preferred_set": "" },
+    "motion": { "easing": "", "duration_scale": { "micro": "", "normal": "", "macro": "" }, "entrance_pattern": "", "exit_pattern": "", "philosophy": "" },
+    "components": { "button_style": "", "input_style": "", "card_style": "", "navigation_pattern": "", "modal_style": "", "list_style": "", "component_notes": "" }
+  },
+  "design_style": {
+    "aesthetic": { "mood": [], "visual_metaphor": "", "era_influence": "", "genre": "", "personality_traits": [], "adjectives": [] },
+    "visual_language": { "complexity": "", "ornamentation": "", "whitespace_usage": "", "visual_weight_distribution": "", "focal_strategy": "", "contrast_level": "", "texture_usage": "" },
+    "composition": { "hierarchy_method": "", "balance_type": "", "flow_direction": "", "grouping_strategy": "", "negative_space_role": "" },
+    "imagery": { "photo_treatment": "", "illustration_style": "", "graphic_elements": "", "pattern_usage": "", "image_shape": "" },
+    "interaction_feel": { "feedback_style": "", "hover_behavior": "", "transition_personality": "", "loading_style": "", "microinteraction_density": "" },
+    "brand_voice_in_ui": { "tone": "", "formality": "", "cta_style": "", "empty_state_approach": "", "error_tone": "" }
+  },
+  "visual_effects": {
+    "overview": { "effect_intensity": "", "performance_tier": "", "fallback_strategy": "", "primary_technology": "" },
+    "background_effects": { "type": "", "description": "", "technology": "", "params": {} },
+    "particle_systems": { "enabled": false },
+    "3d_elements": { "enabled": false },
+    "shader_effects": { "enabled": false },
+    "scroll_effects": { "parallax": { "enabled": false }, "scroll_triggered_animations": { "enabled": false }, "scroll_morphing": { "enabled": false } },
+    "text_effects": { "enabled": false },
+    "cursor_effects": { "enabled": false },
+    "image_effects": { "enabled": false },
+    "glassmorphism_neumorphism": { "enabled": false },
+    "canvas_drawings": { "enabled": false },
+    "svg_animations": { "enabled": false },
+    "composite_notes": ""
+  }
+}

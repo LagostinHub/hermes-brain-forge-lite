@@ -1,0 +1,10 @@
+{
+  "cssTheme": "monokai-filtersun-spectrum",
+  "accentColor": "",
+  "interfaceFontFamily": "Cascadia Code,Cascadia Mono",
+  "textFontFamily": "Cascadia Mono",
+  "theme": "obsidian",
+  "baseFontSize": 16,
+  "baseFontSizeAction": true,
+  "nativeMenus": true
+}

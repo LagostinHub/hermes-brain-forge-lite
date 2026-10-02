@@ -39,7 +39,7 @@ Nunca instale Obsidian aqui.
   $HOME/skills/                          67 skills
   $HOME/skills/.incoming/                colisões — nunca sobrescreve
   $HOME/rules/                           audit-rules.yaml + o hook
-  $VAULT/50-sistema/57-conhecimento/     12 MOCs
+  $VAULT/                                24 zonas (ver secção 6)
 Se $HOME/skills/ já existir com skills: NÃO apague. A regra anti-colisão vale.
 
 ## 3 — AS 67 SKILLS
@@ -117,11 +117,44 @@ Substitua os placeholders por valores resolvidos do runtime.
     Este é o perfil de agente. Contém as regras gerais (T0), o mapa de skills,
     os pointers de knowledge e spec, e a lei de sanitização.
 
-## 6 — OBSIDIAN ( opcional )
-$VAULT não existe e Obsidian não está instalado: crie a pasta e as 2 zonas e
-PERGUNTE se quer o app. Não instale à força.
-$VAULT já tem 00-inbox, 10-clientes, 20-projetos, 40-pessoal, 90-arquivo:
-são dados da pessoa. NÃO toque, NÃO copie por cima, NÃO leia.
+## 6 — VAULT OBSIDIAN ( brain com a mesma estrutura )
+
+Este passo monta um segundo cerebro com a organizacao de referencia: 24 zonas
+numeradas + as convencoes que fazem o agente saber como trabalhar nela.
+
+DETECÇÃO ( nesta ordem ):
+  $OBSIDIAN_VAULT_PATH no ambiente  ->  usa essa
+  senão existe $USERPROFILE/Documents/ObsidianVault  ->  usa essa
+  senão não existe                     ->  $VAULT = $USERPROFILE/Documents/ObsidianVault
+                                          crie. NÃO instale o app sem perguntar.
+
+SE $VAULT JÁ EXISTE E NÃO ESTÁ VAZIA :
+  É o vault da pessoa. Copie APENAS as zonas que faltarem. NÃO copie por cima,
+  NÃO leia 10-clientes, 40-pessoal, 20-projetos, 90-arquivo. Liste o que existe,
+  mostre à pessoa, e pergunte antes de escrever qualquer coisa.
+
+SE $VAULT ESTÁ VAZIO OU NÃO EXISTE :
+  Copie lite/vault-template/ -> $VAULT/  (164 arquivos, ~900 KB, sanitizado)
+
+  Zonas criadas por vault-template/:
+    00-captura  08-filmes  10-clientes  20-projetos  28-books
+    30-conhecimento/{31-ia-e-agentes,32-video-remotion,33-marketing,
+                     34-infraestrutura,35-second-brain,36-seguranca,
+                     37-regras-e-decisoes,38-web-dev}
+    40-pessoal  50-sistema/{51-skills,52-agent-config,53-templates,
+                           54-scripts,55-convencoes,56-boards,57-conhecimento}
+    90-arquivo  .obsidian/  Mapa.md
+
+  APÓS COPIAR:
+  1. lite/payload/mocs/*.md  ->  $VAULT/50-sistema/57-conhecimento/
+  2. lite/templates/OBSIDIAN_VAULT.md.template -> $HOME/OBSIDIAN_VAULT.md
+     substitua <SKILLS> por 67 e <VAULT> pelo path real do vault
+  3. $VAULT/50-sistema/55-convencoes/AGENTS.md é a convenção raiz. Confirme que
+     os paths dentro dela batem com $VAULT antes de confiar nela. Se mentionar
+     zonas que você não criou, ajuste — o template veio de um vault maior.
+
+  NÃO remova .obsidian/. Ele traz config de plugin e appearance que funcionam.
+  NÃO edite Mapa.md para apontar a si mesmo.
 
 ## 7 — SEGREDOS
 Cada linha vazia e secreta de $HOME/.env: peça UMA vez, echo off, escreva no .env
@@ -145,7 +178,9 @@ proteção.
   [ ] $HOME/skills/ tem 67 diretórios com SKILL.md
   [ ] nenhum sha256 duplicado entre diretórios de $HOME/skills/
   [ ] $HOME/skills/.incoming/ vazio, ou toda colisão reportada
-  [ ] 12 MOCs em $VAULT/50-sistema/57-conhecimento/
+  [ ] vault: zonas de vault-template/ copiadas (ou as que faltavam)
+[ ] vault: 12 MOCs em $VAULT/50-sistema/57-conhecimento/
+[ ] vault: $HOME/OBSIDIAN_VAULT.md escrito com <SKILLS>=67 e <VAULT> real
   [ ] grep -rE 'sk-[A-Za-z0-9-]{10,}|AKIA[A-Z0-9]{16}|ghp_|github_pat_|xox[abprs]-|PRIVATE KEY' $HOME $VAULT -> vazio
   [ ] grep -rE 'C:\\(AI|Users)' $HOME/skills $HOME/rules -> vazio
   [ ] $HOME/config.yaml SEM mcp_servers, personalities, kanban, plugins

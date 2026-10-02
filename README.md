@@ -20,8 +20,12 @@ redundante quando voce ja esta aqui.
 ## O que voce recebe
 
 - **Hermes Desktop** instalado e configurado com defaults minimos.
-- **Vault Obsidian** com regras padrao derivadas de `/ponytail`, `/i-have-adhd`
-  e `/caveman`.
+- **Vault Obsidian** com a organizacao de referencia: 24 zonas numeradas
+  (`00-captura` … `90-arquivo`), `.obsidian/` configurado, e as convencoes em
+  `50-sistema/55-convencoes/` — incluindo a `AGENTS.md` que ensina o agente a
+  trabalhar no vault. As regras padrao (`/ponytail`, `/i-have-adhd`, `/caveman`)
+  vao para `$HOME/OBSIDIAN_VAULT.md`.
+- **12 MOCs** em `50-sistema/57-conhecimento/`.
 - **67 skills** em 8 tiers, cobrindo fluxo de spec, Matt Pocock, infra de agente,
   qualidade, git e duas areas verticais.
 - **12 MOCs** (decision cards) para navegar por area em vez de ler 67 arquivos.
@@ -75,7 +79,8 @@ BNF-INSTALL.md          prompt de instalacao (cole no OpenCode)
 payload/skills/         67 skills, sanitizadas
 payload/mocs/           12 decision cards
 payload/MANIFEST-skills.json
-templates/              config.yaml, env e vaultObsidian (valores vazios)
+templates/              config.yaml, env e OBSIDIAN_VAULT.md (valores vazios)
+vault-template/         164 arquivos: 24 zonas + .obsidian + convencoes
 rules/audit-rules.yaml  regras do gate
 hooks/                  bnf-lite-audit.sh (pre-commit)
 ```

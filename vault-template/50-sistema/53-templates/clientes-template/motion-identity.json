@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "name": "<CLIENTE> — Brand Motion Identity",
+    "description": "3 constantes de motion do cliente <CLIENTE>. Preencher via skill lottie-motion (escolher arquétipo + definir constantes).",
+    "source_references": ["lottie-motion SKILL.md"],
+    "created_at": "<DATA>"
+  },
+  "archetype": "",
+  "archetype_rationale": "",
+  "brand_motion_constants": {
+    "signature_easing": "",
+    "signature_easing_name": "",
+    "duration_palette": { "quick": "", "standard": "", "slow": "" },
+    "entrance_pattern": ""
+  },
+  "three_layers": { "primary": "", "secondary": "", "ambient": "" },
+  "camera_robotic": {
+    "micro_drift_always_on": true,
+    "profiles": ["tour", "wide-zoom", "follow", "pulse", "sweep-h", "reveal-up", "reveal-down", "scan-v", "two-pole", "converse"],
+    "default_profile": "tour",
+    "seed_baseline": 1,
+    "scale_range": "1.18 - 1.6",
+    "pan_limit": "14%"
+  },
+  "quality_rules": {
+    "never_linear_spatial": true,
+    "always_three_layers": true,
+    "one_third_screen_max": true,
+    "enter_longer_than_exit": true
+  },
+  "forbidden": []
+}

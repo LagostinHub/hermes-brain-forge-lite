@@ -1,0 +1,12 @@
+# Obsidian Bases view for projects (template).
+# Generic structure only: no live project data ships in the distribution.
+filters:
+  and:
+    - file.hasProperty("type")
+    - type == "project"
+views:
+  - type: table
+    name: Projects (template)
+    order:
+      - file.name
+      - status
