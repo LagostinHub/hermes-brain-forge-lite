@@ -1,0 +1,92 @@
+<!--
+  TEMPLATE — documento de aprovação para o CLIENTE (phone-first, vertical).
+  Validado 12/09/2026 (peça de 2 min, cliente político).
+
+  COMO USAR
+  1. Substitua __FONTS__ pelo @font-face com a TTF do cliente em base64 (garante PNG/PDF na fonte certa):
+       import base64
+       b64 = base64.b64encode(open('C:/AI/hermes/[marca]-motion/public/fonts/Montserrat-Black.ttf','rb').read()).decode()
+       face = "@font-face{font-family:'Montserrat';font-weight:900;font-display:block;" \
+              "src:url(data:font/ttf;base64,%s) format('truetype');}" % b64
+     (repita para ExtraBold 800 e Medium 500 — o Google Fonts por link falha offline).
+  2. Gere __BEATS__ no Python: 1 <div class="blkb"> por bloco e 1 <div class="beat"> por beat,
+     com as 4 linhas (texto/imagem/motion/som) exatamente como no exemplo abaixo.
+  3. Renderize (ver scripts/render_doc.py):
+       msedge --headless=new --hide-scrollbars --force-device-scale-factor=2 \
+              --window-size=430,3400 --screenshot=out.png "file:///CAMINHO/arquivo.html"
+       msedge --headless=new --no-pdf-header-footer --print-to-pdf=out.pdf "file:///CAMINHO/arquivo.html"
+  4. Para aprovação, gere 1 HTML por bloco (o primeiro carrega o hero) e screenshot de cada um →
+     1 PNG por bloco para mandar no WhatsApp; o PDF é para folhear no telefone.
+  5. SEMPRE conferir o render com screenshot + vision antes de mandar ao cliente.
+
+  REGRA: o dispositivo de leitura decide o layout. Cliente que lê no celular ⇒ vertical, tipo grande,
+  um card por beat. A4 de 4 colunas é só versão de arquivo/impressão.
+-->
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<title>Roteiro — aprovação</title>
+<style>
+__FONTS__
+/* @page no TOPO da folha: dentro de @media print o Chromium ignora a margem */
+@page{size:114mm 203mm;margin:0;}
+@media print{.beat,.blkb,.hero,.note,.foot{break-inside:avoid;page-break-inside:avoid;}}
+:root{--amarelo:#FFCF00;--roxo:#780585;--pink:#FD0E59;--teal:#01B7A6;--creme:#F5EFE0;--preto:#111111;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--creme);font-family:'Montserrat',Arial,sans-serif;color:var(--preto);width:380px;}
+.wrap{padding:0 0 10px;}
+.hero{background:var(--roxo);padding:16px 16px 14px;}
+.kick{font-weight:800;font-size:9px;letter-spacing:.16em;color:#fff;opacity:.9;text-transform:uppercase;}
+h1{font-weight:900;font-size:44px;line-height:.9;letter-spacing:-.03em;text-transform:uppercase;color:var(--amarelo);
+  -webkit-text-stroke:1.2px #fff;text-shadow:3px 3px 0 #111;margin:8px 0 6px;}
+.sub{font-weight:500;font-size:12px;line-height:1.4;color:#fff;opacity:.95;}
+.chips{margin-top:10px;}
+.chips span{display:inline-block;font-weight:800;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;
+  padding:3px 7px;margin:0 5px 5px 0;border:1.5px solid #111;box-shadow:2px 2px 0 #111;}
+.c1{background:var(--amarelo);} .c2{background:var(--pink);color:#fff;} .c3{background:var(--teal);} .c4{background:#fff;}
+.hdisc{margin-top:9px;font-size:9px;font-weight:600;color:#fff;opacity:.92;line-height:1.45;}
+.note{background:#fff;border-left:5px solid var(--amarelo);padding:11px 13px;font-size:12px;font-weight:500;line-height:1.45;}
+.note b{font-weight:800;}
+.blkb{background:var(--amarelo);border-top:2.5px solid #111;border-bottom:2.5px solid #111;padding:9px 14px;
+  display:flex;justify-content:space-between;align-items:baseline;}
+.blkb .t{font-weight:900;font-size:14px;letter-spacing:.02em;text-transform:uppercase;color:var(--roxo);}
+.blkb .s{font-weight:900;font-size:12.5px;color:#111;}
+.beat{background:#fff;border:2px solid #111;box-shadow:4px 4px 0 #111;margin:12px 12px 0;padding:11px 12px 12px;}
+.tc{display:inline-block;background:var(--roxo);color:#fff;font-weight:800;font-size:10px;letter-spacing:.06em;
+  padding:3px 8px;box-shadow:2px 2px 0 #111;margin-bottom:9px;}
+.row{display:flex;gap:9px;padding:8px 0;border-top:1px solid #e6e0d0;}
+.row:first-of-type{border-top:0;}
+.lab{flex:0 0 54px;font-weight:900;font-size:8.5px;letter-spacing:.07em;text-transform:uppercase;padding-top:1px;}
+.lab.t{color:var(--pink);} .lab.i{color:var(--teal);} .lab.m{color:var(--roxo);} .lab.s{color:#111;}
+.val{flex:1;font-size:13.5px;font-weight:500;line-height:1.48;}
+.val.tx{font-size:14px;}
+.val em{font-weight:800;font-style:normal;font-size:11.5px;color:var(--pink);display:block;margin-top:3px;}
+.val b{font-weight:800;}
+.foot{background:var(--roxo);color:#fff;padding:12px 14px;margin-top:14px;font-size:9.5px;font-weight:600;line-height:1.5;}
+.foot .big{font-weight:900;font-size:12px;color:var(--amarelo);display:block;margin-bottom:3px;}
+</style></head><body><div class="wrap">
+
+  <!-- hero: só no primeiro bloco -->
+  <div class="hero">
+    <div class="kick">Campanha 2026 · peça para aprovação</div>
+    <h1>Título da peça</h1>
+    <div class="sub">Uma linha dizendo o que a peça é.</div>
+    <div class="chips"><span class="c1">2:00</span><span class="c2">Reels 9:16</span><span class="c3">Sua voz em off</span><span class="c4">Você aparece no fim</span></div>
+    <div class="hdisc">Documento de aprovação · roteiro, imagem e animação · DATA<br>NOME · NÚMERO · CARGO — CNPJ DO CANDIDATO … - PARTIDO …</div>
+  </div>
+  <div class="note"><b>Como funciona:</b> o combinado em 2–3 linhas (off até tal tempo, você aparece no fim,
+    nenhum nome/rosto de adversário, todo número com a fonte na tela).</div>
+
+  <!-- __BEATS__: repita o par blkb + beat -->
+  <div class="blkb"><span class="t">BLOCO A · NOME DO BLOCO</span><span class="s">0:00 – 0:35</span></div>
+
+  <div class="beat">
+    <span class="tc">0:00 – 0:13</span>
+    <div class="row"><div class="lab t">Texto</div><div class="val tx">“a fala em off”<em>pausa de 0,6s</em>“continuação”</div></div>
+    <div class="row"><div class="lab i">Imagem</div><div class="val">o que se vê, em uma linha</div></div>
+    <div class="row"><div class="lab m">Motion</div><div class="val">o que anima · <b>número</b> · selo <b>fonte: X</b></div></div>
+    <div class="row"><div class="lab s">Som</div><div class="val">o que se ouve</div></div>
+  </div>
+
+  <!-- rodapé: só no último bloco -->
+  <div class="foot"><span class="big">NOME · NÚMERO · CARGO</span>CNPJ DO CANDIDATO … - PARTIDO …</div>
+
+</div></body></html>

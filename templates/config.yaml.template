@@ -1,0 +1,62 @@
+# BNF-LITE — config.yaml do Hermes
+# Placeholders resolvidos pelo instalador em runtime. Nenhum path hardcoded.
+# NÃO copie do config do dono: mcp_servers, personalities, kanban, slack/discord/
+# telegram, cron, tts/stt, moa, gateway, plugins e platform_toolsets são config de
+# MÁQUINA, não de sistema. O Hermes cria o default no primeiro run.
+
+model:
+  default: ''
+  provider: ''
+
+agent:
+  max_turns: 60
+  gateway_timeout: 1800
+  api_max_retries: 3
+  tool_use_enforcement: auto
+
+display:
+  personality: concise
+  verbose: false
+
+terminal:
+  backend: local
+  modal_mode: never
+  timeout: 180
+  persistent_shell: true
+
+skills:
+  external_dirs:
+    - ${LOCALAPPDATA}\hermes\skills\mattpocock
+  template_vars: true
+
+context:
+  engine: default
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  memory_char_limit: 2200
+
+delegation:
+  max_iterations: 50
+  child_timeout_seconds: 600
+  max_concurrent_children: 3
+
+compression:
+  enabled: true
+  threshold: 0.5
+  target_ratio: 0.2
+
+security:
+  redact_secrets: true
+  tirith_enabled: true
+
+curator:
+  enabled: true
+  stale_after_days: 30
+  archive_after_days: 90
+
+model_catalog:
+  enabled: true
+
+_config_version: 33

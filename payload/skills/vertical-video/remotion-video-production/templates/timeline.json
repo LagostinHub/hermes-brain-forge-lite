@@ -1,0 +1,35 @@
+{
+ "schemaVersion": 1,
+ "fps": 30,
+ "width": 1080,
+ "height": 1920,
+ "blocks": [
+  {
+   "id": "hook",
+   "start": 0,
+   "duration": 75,
+   "kind": "text",
+   "text": "[HEADLINE]",
+   "style": {
+    "size": 72,
+    "weight": 900,
+    "color": "#FFCF00",
+    "align": "center"
+   }
+  },
+  {
+   "id": "body",
+   "start": 75,
+   "duration": 150,
+   "kind": "text",
+   "text": "[BODY]",
+   "style": {
+    "size": 48,
+    "weight": 500,
+    "color": "#F9F8F6",
+    "align": "center"
+   }
+  }
+ ],
+ "disclaimer": "Esquema de referência. Ajuste duracoes para a duracao real da fala/legenda."
+}

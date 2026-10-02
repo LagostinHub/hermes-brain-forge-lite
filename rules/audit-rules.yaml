@@ -1,0 +1,90 @@
+# audit-rules.yaml — BNF-LITE
+#
+# Regras de sanitização como DADO (não código). consumed por:
+#   - git pre-commit hook  (bash 3.2 / POSIX ERE)
+#   - varredura manual      (grep -rE)
+#
+# PORTABILIDADE DE PADRÃO (não quebrar):
+#   - POSIX ERE (grep -E) E .NET
+#   - use [[:space:]] para espaço; POSIX ERE não honra \t nem \s
+#   - \\ para barra literal; NUNCA \d \w \b
+#   - regex de segredo carregam boundary (^|[^A-Za-z0-9]) para não disparar em
+#     palavra comum que contém o prefixo (ex: "task-reviewer-prompt" contém sk-)
+#
+# A boundary (^|[^A-Za-z0-9]) é o que separa segredo de palavra. Sem ela o gate
+# bloqueia o próprio sistema.
+
+file_globs: '*.md,*.yaml,*.yml,*.json,*.ps1,*.sh,*.txt,*.env'
+
+rules:
+
+  # ---- (a) SEGREDOS -------------------------------------------------------
+  - id: secret-openai-style-key
+    pattern: '(^|[^A-Za-z0-9])sk-[A-Za-z0-9-]{10,}'
+    ci: false
+    severity: critical
+    message: 'Possible OpenAI-style secret'
+
+  - id: secret-aws-access-key
+    pattern: '(^|[^A-Za-z0-9])AKIA[A-Z0-9]{16}'
+    ci: false
+    severity: critical
+    message: 'Possible AWS access key id'
+
+  - id: secret-github-pat
+    pattern: '(^|[^A-Za-z0-9])ghp_[A-Za-z0-9]{20,}'
+    ci: false
+    severity: critical
+    message: 'Possible GitHub classic PAT'
+
+  - id: secret-github-fine-grained-pat
+    pattern: '(^|[^A-Za-z0-9])github_pat_[A-Za-z0-9_]{20,}'
+    ci: false
+    severity: critical
+    message: 'Possible GitHub fine-grained PAT'
+
+  - id: secret-slack-token
+    pattern: '(^|[^A-Za-z0-9])xox[abprs]-[A-Za-z0-9-]{10,}'
+    ci: false
+    severity: critical
+    message: 'Possible Slack token'
+
+  - id: secret-pem-private-key
+    pattern: '-----BEGIN[[:space:]][A-Z ]*PRIVATE KEY-----'
+    ci: false
+    severity: critical
+    message: 'PEM private key block'
+
+  # ---- (b) PATH DE DONO ---------------------------------------------------
+  # Path específico de uma máquina nunca entra num pacote distribuído.
+  # Resolve-se do ambiente em runtime; nunca hardcode.
+  #
+  # BARRA LITERAL EM POSIX ERE = 2 barras no padrão. Medido neste gate:
+  # 1 barra -> exit 2 (grep erra). 2 barras -> MATCH. 4 barras -> casa 2 barras
+  # e NÃO pega o path. O YAML single-quoted NÃO dobra a barra (só o
+  # double-quoted faz), então 2 no arquivo = 2 no regex.
+  # O hook e este YAML foram testados juntos: ambos precisam casar exatamente a
+  # mesma string, senão o gate mente.
+  - id: path-owner-absolute
+    pattern: '(^|[^A-Za-z0-9])C:\\(AI|Users\\[a-z]+)\\'
+    ci: false
+    severity: critical
+    message: 'Owner-specific absolute path — derive do runtime, não hardcode'
+
+exemptions:
+  - 'payload/MANIFEST-skills.json'   # contem "origin" com path do forge por design
+  - 'rules/audit-rules.yaml'        # a regra casa com ela mesma
+  - '*.example'
+  - '*.template'
+
+allowlist: []
+
+# ---- COMO CONSERTAR QUANDO O GATE DISPARA ----------------------------------
+# O conserto NUNCA é "redigir" ou "tirar a linha". É:
+#   1. preservar   -> salvar o valor num cofre local ou no .env da máquina
+#   2. classificar -> é segredo ou é path de dono?
+#   3. sanitizar   -> substituir por placeholder no arquivo versionado
+#   4. conectar    -> ligar a injeção na instalação (FASE de segredos)
+#   5. validar     -> re-rode o gate, deve passar
+#   6. registrar   -> a regra que pegou, se for nova, entra aqui
+# Ver docs/sanitization-law.md Artigo 2.

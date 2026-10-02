@@ -1,0 +1,847 @@
+{
+ "skills": [
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "ponytail",
+   "path": "payload/skills/regras-gerais/ponytail",
+   "sha256": "46a57e26a2632e7f",
+   "files": 1,
+   "bytes": 6757,
+   "origin": "skills/user-level/ponytail",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "ponytail-review",
+   "path": "payload/skills/regras-gerais/ponytail-review",
+   "sha256": "6c8b7e5c897a406b",
+   "files": 1,
+   "bytes": 2440,
+   "origin": "skills/user-level/ponytail-review",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "ponytail-audit",
+   "path": "payload/skills/regras-gerais/ponytail-audit",
+   "sha256": "49e835c963130091",
+   "files": 1,
+   "bytes": 1693,
+   "origin": "skills/user-level/ponytail-audit",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "ponytail-debt",
+   "path": "payload/skills/regras-gerais/ponytail-debt",
+   "sha256": "c0a5c0c0cc843cb5",
+   "files": 1,
+   "bytes": 1747,
+   "origin": "skills/user-level/ponytail-debt",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "ponytail-gain",
+   "path": "payload/skills/regras-gerais/ponytail-gain",
+   "sha256": "f8847c410b54978f",
+   "files": 1,
+   "bytes": 2023,
+   "origin": "skills/user-level/ponytail-gain",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "ponytail-help",
+   "path": "payload/skills/regras-gerais/ponytail-help",
+   "sha256": "07e0fc50c722cee9",
+   "files": 1,
+   "bytes": 2867,
+   "origin": "skills/user-level/ponytail-help",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "i-have-adhd",
+   "path": "payload/skills/regras-gerais/i-have-adhd",
+   "sha256": "13969c0aa5a69127",
+   "files": 3,
+   "bytes": 9155,
+   "origin": "skills/user-level/i-have-adhd",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "caveman",
+   "path": "payload/skills/regras-gerais/caveman",
+   "sha256": "429b284113acbcd2",
+   "files": 2,
+   "bytes": 7250,
+   "origin": "skills/user-level/caveman",
+   "sanitized": true
+  },
+  {
+   "tier": "T0",
+   "slug": "regras-gerais",
+   "name": "caveman-commit",
+   "path": "payload/skills/regras-gerais/caveman-commit",
+   "sha256": "54d5ca0894ecab0c",
+   "files": 2,
+   "bytes": 3923,
+   "origin": "skills/user-level/caveman-commit",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "openspec-propose",
+   "path": "payload/skills/spec-fluxo/openspec-propose",
+   "sha256": "68de500472fe24dc",
+   "files": 1,
+   "bytes": 11295,
+   "origin": ".agents/skills/openspec-propose",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "openspec-apply-change",
+   "path": "payload/skills/spec-fluxo/openspec-apply-change",
+   "sha256": "4b32454fc708f60e",
+   "files": 1,
+   "bytes": 8221,
+   "origin": ".agents/skills/openspec-apply-change",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "grill-with-docs",
+   "path": "payload/skills/spec-fluxo/grill-with-docs",
+   "sha256": "abc0fa7948db18b5",
+   "files": 2,
+   "bytes": 404,
+   "origin": "skills/user-level/grill-with-docs",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "grill-me",
+   "path": "payload/skills/spec-fluxo/grill-me",
+   "sha256": "19e660207b447acf",
+   "files": 2,
+   "bytes": 306,
+   "origin": "skills/user-level/grill-me",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "grilling",
+   "path": "payload/skills/spec-fluxo/grilling",
+   "sha256": "c00a8cc786d3349d",
+   "files": 2,
+   "bytes": 1995,
+   "origin": "skills/user-level/grilling",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "to-spec",
+   "path": "payload/skills/spec-fluxo/to-spec",
+   "sha256": "3868f99eb2acc817",
+   "files": 2,
+   "bytes": 3265,
+   "origin": "skills/user-level/to-spec",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "to-tickets",
+   "path": "payload/skills/spec-fluxo/to-tickets",
+   "sha256": "8082bc6ef165027c",
+   "files": 2,
+   "bytes": 5927,
+   "origin": "skills/user-level/to-tickets",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "implement",
+   "path": "payload/skills/spec-fluxo/implement",
+   "sha256": "30cd7bc1ebfb3891",
+   "files": 2,
+   "bytes": 592,
+   "origin": "skills/user-level/implement",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "tdd",
+   "path": "payload/skills/spec-fluxo/tdd",
+   "sha256": "193b791c489d1640",
+   "files": 4,
+   "bytes": 7508,
+   "origin": "skills/user-level/tdd",
+   "sanitized": true
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "code-review",
+   "path": "payload/skills/spec-fluxo/code-review",
+   "sha256": "3abbdfe52540f924",
+   "files": 2,
+   "bytes": 6779,
+   "origin": "skills/user-level/code-review",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "ask-matt",
+   "path": "payload/skills/navegacao-fase/ask-matt",
+   "sha256": "340d410e124d193d",
+   "files": 3,
+   "bytes": 16054,
+   "origin": "skills/user-level/ask-matt",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "handoff",
+   "path": "payload/skills/navegacao-fase/handoff",
+   "sha256": "96f8045f01f569da",
+   "files": 2,
+   "bytes": 1056,
+   "origin": "skills/user-level/handoff",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "claude-handoff",
+   "path": "payload/skills/navegacao-fase/claude-handoff",
+   "sha256": "1ef51445735be40d",
+   "files": 2,
+   "bytes": 1465,
+   "origin": "skills/user-level/claude-handoff",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "wait-what",
+   "path": "payload/skills/navegacao-fase/wait-what",
+   "sha256": "81aaa21de21a3f69",
+   "files": 2,
+   "bytes": 498,
+   "origin": "skills/user-level/wait-what",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "prototype",
+   "path": "payload/skills/navegacao-fase/prototype",
+   "sha256": "ad67a04d7f5cbba6",
+   "files": 4,
+   "bytes": 16314,
+   "origin": "skills/user-level/prototype",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "research",
+   "path": "payload/skills/navegacao-fase/research",
+   "sha256": "524b404b1ca373a8",
+   "files": 2,
+   "bytes": 903,
+   "origin": "skills/user-level/research",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "to-questionnaire",
+   "path": "payload/skills/navegacao-fase/to-questionnaire",
+   "sha256": "65d8f34c1e808911",
+   "files": 2,
+   "bytes": 3145,
+   "origin": "skills/user-level/to-questionnaire",
+   "sanitized": true
+  },
+  {
+   "tier": "T2",
+   "slug": "navegacao-fase",
+   "name": "wayfinder",
+   "path": "payload/skills/navegacao-fase/wayfinder",
+   "sha256": "f939b540243c3ec4",
+   "files": 2,
+   "bytes": 12333,
+   "origin": "skills/user-level/wayfinder",
+   "sanitized": true
+  },
+  {
+   "tier": "T3",
+   "slug": "infra-agente",
+   "name": "hermes-agent",
+   "path": "payload/skills/infra-agente/hermes-agent",
+   "sha256": "605e2bc15c58f43e",
+   "files": 3,
+   "bytes": 72377,
+   "origin": "skills/hermes-tree/autonomous-ai-agents/hermes-agent",
+   "sanitized": true
+  },
+  {
+   "tier": "T3",
+   "slug": "infra-agente",
+   "name": "hermes-skill-install",
+   "path": "payload/skills/infra-agente/hermes-skill-install",
+   "sha256": "ef5435b2fd5cff9b",
+   "files": 1,
+   "bytes": 7085,
+   "origin": "skills/hermes-tree/hermes/hermes-skill-install",
+   "sanitized": true
+  },
+  {
+   "tier": "T3",
+   "slug": "infra-agente",
+   "name": "hermes-provider-config",
+   "path": "payload/skills/infra-agente/hermes-provider-config",
+   "sha256": "1421b7be8dd35835",
+   "files": 2,
+   "bytes": 9564,
+   "origin": "skills/hermes-tree/hermes/hermes-provider-config",
+   "sanitized": true
+  },
+  {
+   "tier": "T3",
+   "slug": "infra-agente",
+   "name": "hermes-mcp-troubleshoot",
+   "path": "payload/skills/infra-agente/hermes-mcp-troubleshoot",
+   "sha256": "b7b862fc3b9db3f0",
+   "files": 6,
+   "bytes": 46221,
+   "origin": "skills/hermes-tree/devops/hermes-mcp-troubleshoot",
+   "sanitized": true
+  },
+  {
+   "tier": "T3",
+   "slug": "infra-agente",
+   "name": "wizard",
+   "path": "payload/skills/infra-agente/wizard",
+   "sha256": "91e7189bac65482d",
+   "files": 3,
+   "bytes": 13106,
+   "origin": "skills/user-level/wizard",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "systematic-debugging",
+   "path": "payload/skills/qualidade-debug/systematic-debugging",
+   "sha256": "3b20719eca4f0461",
+   "files": 11,
+   "bytes": 40734,
+   "origin": "skills/user-level/systematic-debugging",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "diagnosing-bugs",
+   "path": "payload/skills/qualidade-debug/diagnosing-bugs",
+   "sha256": "bca66b7141da7d22",
+   "files": 3,
+   "bytes": 10136,
+   "origin": "skills/user-level/diagnosing-bugs",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "domain-modeling",
+   "path": "payload/skills/qualidade-debug/domain-modeling",
+   "sha256": "b577e9dbc7bedc5b",
+   "files": 4,
+   "bytes": 8711,
+   "origin": "skills/user-level/domain-modeling",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "codebase-design",
+   "path": "payload/skills/qualidade-debug/codebase-design",
+   "sha256": "22d3815e5629ddea",
+   "files": 4,
+   "bytes": 12038,
+   "origin": "skills/user-level/codebase-design",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "improve-codebase-architecture",
+   "path": "payload/skills/qualidade-debug/improve-codebase-architecture",
+   "sha256": "ab67dc77f7fb0e82",
+   "files": 3,
+   "bytes": 13043,
+   "origin": "skills/user-level/improve-codebase-architecture",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "resolving-merge-conflicts",
+   "path": "payload/skills/qualidade-debug/resolving-merge-conflicts",
+   "sha256": "726cc35e566c3fc7",
+   "files": 2,
+   "bytes": 1051,
+   "origin": "skills/user-level/resolving-merge-conflicts",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "careful",
+   "path": "payload/skills/qualidade-debug/careful",
+   "sha256": "64adcd299248c118",
+   "files": 3,
+   "bytes": 9215,
+   "origin": "skills/user-level/careful",
+   "sanitized": true
+  },
+  {
+   "tier": "T4",
+   "slug": "qualidade-debug",
+   "name": "guard",
+   "path": "payload/skills/qualidade-debug/guard",
+   "sha256": "ab22714e84c096ee",
+   "files": 2,
+   "bytes": 6510,
+   "origin": "skills/user-level/guard",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "github-repo-management",
+   "path": "payload/skills/git-github/github-repo-management",
+   "sha256": "d1ac12e2e76a0357",
+   "files": 2,
+   "bytes": 20502,
+   "origin": "skills/user-level/github-repo-management",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "github-issues",
+   "path": "payload/skills/git-github/github-issues",
+   "sha256": "fe05320d6fdd0420",
+   "files": 3,
+   "bytes": 10818,
+   "origin": "skills/user-level/github-issues",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "github-pr-workflow",
+   "path": "payload/skills/git-github/github-pr-workflow",
+   "sha256": "3de7c5637871c286",
+   "files": 5,
+   "bytes": 19113,
+   "origin": "skills/user-level/github-pr-workflow",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "github-code-review",
+   "path": "payload/skills/git-github/github-code-review",
+   "sha256": "bc15ee6077c716d4",
+   "files": 2,
+   "bytes": 16635,
+   "origin": "skills/user-level/github-code-review",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "git-commit",
+   "path": "payload/skills/git-github/git-commit",
+   "sha256": "ac033295f3ac03e8",
+   "files": 1,
+   "bytes": 9392,
+   "origin": "skills/user-level/git-commit",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "using-git-worktrees",
+   "path": "payload/skills/git-github/using-git-worktrees",
+   "sha256": "e2c3ec142e52868a",
+   "files": 1,
+   "bytes": 7472,
+   "origin": "skills/user-level/using-git-worktrees",
+   "sanitized": true
+  },
+  {
+   "tier": "T5",
+   "slug": "git-github",
+   "name": "finishing-a-development-branch",
+   "path": "payload/skills/git-github/finishing-a-development-branch",
+   "sha256": "e6d4a812de900d33",
+   "files": 1,
+   "bytes": 6832,
+   "origin": "skills/user-level/finishing-a-development-branch",
+   "sanitized": true
+  },
+  {
+   "tier": "T6a",
+   "slug": "vertical-dev",
+   "name": "frontend-design",
+   "path": "payload/skills/vertical-dev/frontend-design",
+   "sha256": "35c43b9d10c2388d",
+   "files": 2,
+   "bytes": 18666,
+   "origin": "skills/user-level/frontend-design",
+   "sanitized": true
+  },
+  {
+   "tier": "T6a",
+   "slug": "vertical-dev",
+   "name": "vercel-react-best-practices",
+   "path": "payload/skills/vertical-dev/vercel-react-best-practices",
+   "sha256": "71ed7794962fa6e8",
+   "files": 76,
+   "bytes": 230383,
+   "origin": "skills/user-level/vercel-react-best-practices",
+   "sanitized": true
+  },
+  {
+   "tier": "T6a",
+   "slug": "vertical-dev",
+   "name": "accessibility",
+   "path": "payload/skills/vertical-dev/accessibility",
+   "sha256": "5f96552e41db945f",
+   "files": 3,
+   "bytes": 30361,
+   "origin": "skills/user-level/accessibility",
+   "sanitized": true
+  },
+  {
+   "tier": "T6a",
+   "slug": "vertical-dev",
+   "name": "web-design-guidelines",
+   "path": "payload/skills/vertical-dev/web-design-guidelines",
+   "sha256": "f4647ca866a3accf",
+   "files": 1,
+   "bytes": 1231,
+   "origin": "skills/user-level/web-design-guidelines",
+   "sanitized": true
+  },
+  {
+   "tier": "T6a",
+   "slug": "vertical-dev",
+   "name": "frontend-skills",
+   "path": "payload/skills/vertical-dev/frontend-skills",
+   "sha256": "24cdf461c008d8ea",
+   "files": 8,
+   "bytes": 105991,
+   "origin": "skills/user-level/frontend-skills",
+   "sanitized": true
+  },
+  {
+   "tier": "T6a",
+   "slug": "vertical-dev",
+   "name": "vercel-composition-patterns",
+   "path": "payload/skills/vertical-dev/vercel-composition-patterns",
+   "sha256": "5514ac1075fa339c",
+   "files": 14,
+   "bytes": 50329,
+   "origin": "skills/user-level/vercel-composition-patterns",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "cinema-geral-decisions",
+   "path": "payload/skills/vertical-video/cinema-geral-decisions",
+   "sha256": "5741ca06e27ac598",
+   "files": 1,
+   "bytes": 976,
+   "origin": "skills/hermes-tree/filmmaking/cinema-geral-decisions",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "film-decupage",
+   "path": "payload/skills/vertical-video/film-decupage",
+   "sha256": "28f14269d47478f6",
+   "files": 54,
+   "bytes": 1073614,
+   "origin": "skills/user-level/film-decupage",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "film-editing",
+   "path": "payload/skills/vertical-video/film-editing",
+   "sha256": "7a22e75a7ffa24f4",
+   "files": 1,
+   "bytes": 12791,
+   "origin": "skills/user-level/film-editing",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "screenplay-craft",
+   "path": "payload/skills/vertical-video/screenplay-craft",
+   "sha256": "18195b869dc7e022",
+   "files": 1,
+   "bytes": 10433,
+   "origin": "skills/user-level/screenplay-craft",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "creative-motion",
+   "path": "payload/skills/vertical-video/creative-motion",
+   "sha256": "1e5f4ecd6eb89f79",
+   "files": 41,
+   "bytes": 538647,
+   "origin": "skills/user-level/creative-motion",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "audio-sound-design",
+   "path": "payload/skills/vertical-video/audio-sound-design",
+   "sha256": "3717ee15e385f6fc",
+   "files": 1,
+   "bytes": 10603,
+   "origin": "skills/user-level/audio-sound-design",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-best-practices",
+   "path": "payload/skills/vertical-video/remotion-best-practices",
+   "sha256": "3d1a9231d39bb157",
+   "files": 137,
+   "bytes": 1137937,
+   "origin": "skills/user-level/remotion-best-practices",
+   "sanitized": true
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-3d-alpha",
+   "path": "payload/skills/vertical-video/remotion-3d-alpha",
+   "sha256": "d728ef4fc097d339",
+   "files": 1,
+   "bytes": 5331,
+   "origin": "skills/user-level/remotion-3d-alpha",
+   "sanitized": true,
+   "added": "router-dependency"
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-film-overlays",
+   "path": "payload/skills/vertical-video/remotion-film-overlays",
+   "sha256": "dc5869779f2b870c",
+   "files": 18,
+   "bytes": 138534,
+   "origin": "skills/user-level/remotion-film-overlays",
+   "sanitized": true,
+   "added": "router-dependency"
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-headless-fonts",
+   "path": "payload/skills/vertical-video/remotion-headless-fonts",
+   "sha256": "148a38fb0fe183af",
+   "files": 2,
+   "bytes": 7726,
+   "origin": "skills/user-level/remotion-headless-fonts",
+   "sanitized": true,
+   "added": "router-dependency"
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-three-3d",
+   "path": "payload/skills/vertical-video/remotion-three-3d",
+   "sha256": "d8316a01469d2ea9",
+   "files": 5,
+   "bytes": 20018,
+   "origin": "skills/user-level/remotion-three-3d",
+   "sanitized": true,
+   "added": "router-dependency"
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-video-audio-pipeline",
+   "path": "payload/skills/vertical-video/remotion-video-audio-pipeline",
+   "sha256": "8138470e288a69fb",
+   "files": 2,
+   "bytes": 7454,
+   "origin": "skills/user-level/remotion-video-audio-pipeline",
+   "sanitized": true,
+   "added": "router-dependency"
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-video-production",
+   "path": "payload/skills/vertical-video/remotion-video-production",
+   "sha256": "2f35843b5f42eeb3",
+   "files": 10,
+   "bytes": 51880,
+   "origin": "skills/user-level/remotion-video-production",
+   "sanitized": true,
+   "added": "router-dependency"
+  },
+  {
+   "tier": "T6b",
+   "slug": "vertical-video",
+   "name": "remotion-windows-render",
+   "path": "payload/skills/vertical-video/remotion-windows-render",
+   "sha256": "4727986efd04f21f",
+   "files": 1,
+   "bytes": 4659,
+   "origin": "skills/user-level/remotion-windows-render",
+   "sanitized": true,
+   "added": "router-dependency"
+  }
+ ],
+ "mocs": [
+  {
+   "name": "57.00-cinema-theory-moc.md",
+   "bytes": 33579,
+   "sha256": "7d3172c4e633922d",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.00-cinema-theory-moc.md"
+  },
+  {
+   "name": "57.20-roteiro-moc.md",
+   "bytes": 35988,
+   "sha256": "1982e59b51c679b6",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.20-roteiro-moc.md"
+  },
+  {
+   "name": "57.21-cinematografia-moc.md",
+   "bytes": 28194,
+   "sha256": "bef33284ed3c5fbe",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.21-cinematografia-moc.md"
+  },
+  {
+   "name": "57.22-edição-moc.md",
+   "bytes": 30713,
+   "sha256": "2e9418c7c7fc4530",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.22-edição-moc.md"
+  },
+  {
+   "name": "57.23-montagem-moc.md",
+   "bytes": 28585,
+   "sha256": "0acb09ef203dc977",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.23-montagem-moc.md"
+  },
+  {
+   "name": "57.24-animação-moc.md",
+   "bytes": 41922,
+   "sha256": "d0afe56829d8d24d",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.24-animação-moc.md"
+  },
+  {
+   "name": "57.25-design-moc.md",
+   "bytes": 27854,
+   "sha256": "0eee9bed4f01d03a",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.25-design-moc.md"
+  },
+  {
+   "name": "57.26-audio-moc.md",
+   "bytes": 51035,
+   "sha256": "db8c8ce7a13b3b5d",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.26-audio-moc.md"
+  },
+  {
+   "name": "57.26-audio-dominio-moc.md",
+   "bytes": 686,
+   "sha256": "a883352d70286d07",
+   "origin": "vault-template/50-sistema/57-conhecimento/57.26-audio-dominio/57.26-audio-dominio-moc.md"
+  },
+  {
+   "name": "38.00-web-dev-moc.md",
+   "bytes": 7373,
+   "sha256": "f345c68b0a6fc868",
+   "origin": "vault-template/30-conhecimento/38-web-dev/38.00-web-dev-moc.md"
+  },
+  {
+   "name": "52.00-agent-config-moc.md",
+   "bytes": 1486,
+   "sha256": "d1fa25bf706acf1e",
+   "origin": "vault-template/50-sistema/52-agent-config/52.00-agent-config-moc.md"
+  },
+  {
+   "name": "35.03-transversal-moc.md",
+   "bytes": 906,
+   "sha256": "4d07eec2cbd7842f",
+   "origin": "vault-template/30-conhecimento/35-second-brain/35.03-transversal-moc.md"
+  }
+ ],
+ "sanitization": {
+  "pass": "todo o payload varrido",
+  "files_removed": 7,
+  "files_sanitized": 24,
+  "removed": [],
+  "note": "arremovidos por serem inventario da maquina do dono, nao conhecimento",
+  "agent_wrappers_removed": [
+   "claude-code",
+   "codex",
+   "opencode",
+   "opencode-dispatch"
+  ],
+  "renamed_files": [
+   "2 arquivos de tema renomeados para brand-theme/marca-theme (nome de cliente removido do filename)",
+   "identificadores de cliente em 5 arquivos de codigo renomeados (MARCA/SOBRENOME/CAMPAIGN) mantendo imports validos",
+   "manifest 'origin' sanitizado"
+  ],
+  "pointer_repairs": [
+   "24 ponteiros corrigidos: assets/references/scripts de remotion-best-practices reapontados para remotion-maps/techniques/<tecnica>/",
+   "film-decupage: 4 refs inexistentes reapontadas para os arquivos que existem (video-shotcraft, lighting-and-color, genre-playbooks, cinematic-language)",
+   "remotion-video-production: bloco REFERENCES duplicado removido; 3 templates criados (timeline.json, package.json, RootEntry.tsx)",
+   "hermes-agent: nota de escopo_added (scripts/run_tests.sh pertence ao repo upstream, nao ao payload)",
+   "5 arquivos trazidos do forge: qc-pipeline.md, composition.md, scenes.md, component-library.tsx, davinci-resolve-mcp.md"
+  ]
+ }
+}

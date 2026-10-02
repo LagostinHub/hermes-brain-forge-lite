@@ -1,0 +1,17 @@
+# Ambiente
+.env
+*.local.yaml
+config.yaml
+
+# Python (gate usa bash; skill installer pode criar venv)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# SOUL / memoria de agente - nunca versionar
+SOUL.md
+memories/
+scratch/
+
+# SO: o payload e versionado de proposito. Nao adicionar payload/ aqui.

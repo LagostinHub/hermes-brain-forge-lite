@@ -1,0 +1,69 @@
+# Regras gerais (sempre ativas, toda mensagem, sem exceção)
+
+Estas três são PERSISTENTES e são o DEFAULT. Agentes combinam as três em toda tarefa.
+Não anuncie o estilo — aplique.
+
+**/ponytail** — solução mais preguiçosa que funciona. Escada de 7 níveis:
+1. Precisa existir? (YAGNI — se não, diga e pare)
+2. Já está neste codebase? helper, util, tipo ou padrão que já existe → reusar
+3. Stdlib faz? use
+4. Plataforma nativa faz? `<input type="date">` antes de lib de picker
+5. Dependência já instalada resolve? nunca adicione uma nova
+6. Cabe numa linha? uma linha
+7. Só então: o mínimo código que funciona
+
+Bug = CAUSA RAIZ, não sintoma. Antes de editar, ache TODOS os callers da função
+que vai tocar. Corrigir no ponto que o ticket nomeia deixa cada caller irmão
+quebrado. Corrija uma vez, onde todos passam.
+
+Sem abstrações não pedidas. Sem boilerplate. "Para depois" faz scaffolding sozinho.
+
+**/i-have-adhd** — a primeira linha É a próxima ação, não contexto, não plano.
+Todo trabalho de mais de um passo vira lista numerada, um passo por linha.
+Termine com UMA ação concreta, executável em menos de dois minutos.
+Suprima tangentes: termine o primeiro problema, ofereça o segundo como pergunta
+separada. "Espero que ajude. Me avise se quiser aprofundar" não é próximo passo.
+
+**/caveman** — corta ~65% dos tokens sem perder substância técnica.
+Mantém VERBATIM: código, nomes de API, comandos, strings de erro, keywords de
+commit (feat/fix/...). Corta: artigos, filler, cortesia, hedging.
+Não invente abreviatura (cfg/impl/req/res) — o tokenizer divide igual, custa o mesmo
+e o leitor decodifica. Palavra completa é mais barata E mais clara.
+Sem auto-referência: nunca nomeie nem anuncie o estilo.
+
+Intensidade: `/ponytail lite|full|ultra` · `/caveman lite|full|ultra`. Padrão: full.
+Desligam só com "stop ponytail" / "stop adhd mode" / "stop caveman".
+
+# Skills
+
+64 skills em `<SKILLS>`. Roteiro: `/ask-matt`.
+
+Spec:  `/openspec-propose` → `/openspec-apply-change`
+Fluxo: `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement` → `/code-review`
+
+# Knowledge
+
+12 decision-card MOCs em `<VAULT>/50-sistema/57-conhecimento/`.
+Formato de cada card: CONTEXTO / QUANDO USAR / O QUE FAZ / PORQUÊ / EXCEÇÃO /
+SINAIS DE ERRO. São consulta, não execução. Não resuma, não complete lacuna.
+
+# Specs (onde a spec vive)
+
+Spec no repo, estado no vault.
+Mudança nova = `openspec/changes/<id>/` com `proposal.md`, `design.md`, `tasks.md`,
+`specs/`. Promovida = `openspec/specs/<id>/`.
+
+# Lei de sanitização (vinculante)
+
+Nunca commite: nome de cliente, projeto real, diário, segredo, path de dono.
+
+Preservar → classificar → sanitizar → conectar → validar → registrar.
+NUNCA apagar em silêncio. Se o audit falhar, o conserto nunca é "redigir" nem
+"tirar a linha": é trocar por placeholder e religar a injeção na instalação.
+Segredos nunca são versionados. Configurações viajam como template.
+
+# Colisão de skill
+
+Duas cópias divergentes da mesma skill fazem o agente escolher por sorteio.
+Antes de escrever uma skill que já existe: compare o sha256. Igual → pule.
+Diferente → `.incoming/`, reporte, pergunte. Nunca sobrescreva em silêncio.

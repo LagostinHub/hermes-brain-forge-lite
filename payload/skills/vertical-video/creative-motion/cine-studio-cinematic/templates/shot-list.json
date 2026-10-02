@@ -1,0 +1,60 @@
+{
+  "project": "NOME_DO_PROJETO",
+  "mode": "guided",
+  "shots": [
+    {
+      "shot_number": 1,
+      "scene": "INT. ESCRITÓRIO - DIA",
+      "cinema_mode": "M1",
+      "characters": ["PERSONAGEM_A", "PERSONAGEM_B"],
+      "duration_seconds": 5,
+      "wan_frames": 81,
+      "keyframe_ref": "keyframes/scene_001.png",
+      "prompt_blocks": {
+        "scene_mood": "Quiet dramatic moment in office",
+        "frame_map": "Personagem_A center midground, Personagem_B left foreground",
+        "subject_lock": "Personagem_A facing camera-left, seated, gaze down",
+        "cross_frame_rules": "Never swap positions, never cross center",
+        "movement": "Slow push-in, micro-movements only",
+        "last_frame": "Personagem_A lifts gaze to camera",
+        "world_plate": "Office, daytime, warm window light",
+        "sound_bed": "Keyboard clicks, distant traffic, AC hum",
+        "capture_realism": "cinematic, film grain, atmospheric depth, natural skin texture",
+        "camera_capture": "M1 Narrative, 85mm, T2.8, slow dolly push-in, 24fps"
+      },
+      "status": "pending",
+      "seed": -1,
+      "takes": [],
+      "connects_from": null,
+      "connects_to": 2,
+      "notes": ""
+    },
+    {
+      "shot_number": 2,
+      "scene": "INT. ESCRITÓRIO - DIA",
+      "cinema_mode": "M1",
+      "characters": ["PERSONAGEM_B"],
+      "duration_seconds": 3,
+      "wan_frames": 49,
+      "keyframe_ref": "keyframes/scene_002.png",
+      "prompt_blocks": {
+        "scene_mood": "Reaction shot from Personagem_B",
+        "frame_map": "Personagem_B left foreground, shallow DOF",
+        "subject_lock": "Personagem_B facing camera-right, concern in expression",
+        "cross_frame_rules": "Connects from Shot 1 eyeline match",
+        "movement": "Static, slight micro-shift in eyes",
+        "last_frame": "Personagem_B looks down, defeated",
+        "world_plate": "Office, daytime, warm window light",
+        "sound_bed": "Silence, fabric rustle",
+        "capture_realism": "cinematic, film grain, atmospheric depth, natural skin texture",
+        "camera_capture": "M1 Narrative, 85mm, T2.8, locked tripod, 24fps"
+      },
+      "status": "pending",
+      "seed": 12345,
+      "takes": [],
+      "connects_from": 1,
+      "connects_to": null,
+      "notes": "Seed fixa para conectar com Shot 1"
+    }
+  ]
+}
