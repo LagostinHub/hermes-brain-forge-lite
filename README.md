@@ -1,6 +1,6 @@
 # hermes-brain-forge-lite
 
-**67 skills + 12 MOCs, autocontidas. Sem URL, sem repo privado, sem `gh auth`.**
+**71 skills + 12 MOCs + ciclo de spec OpenSpec, autocontidas. Sem URL, sem repo privado, sem `gh auth`.**
 
 Um prompt colado no **OpenCode** instala o Hermes Desktop, configura o vault
 Obsidian e distribui as skills ja sanitizadas. Este repo e a distribuicao minima;
@@ -11,7 +11,7 @@ a versao completa do sistema e separada e nao esta aqui.
 1. Clone ou baixe este repo.
 2. No **OpenCode**, cole o conteudo de [`BNF-INSTALL.md`](BNF-INSTALL.md).
 3. O proprio prompt faz o resto: detecta o ambiente, instala o Hermes, escreve
-   `config.yaml` e `env` minimos, e instala as 67 skills.
+   `config.yaml` e `env` minimos, e instala as 71 skills.
 
 O prompt assume que voce esta no OpenCode. Ele nao instala wrappers de coding
 agent (`codex`, `claude-code`, `opencode`) — delegar para outro agente e
@@ -26,7 +26,9 @@ redundante quando voce ja esta aqui.
   trabalhar no vault. As regras padrao (`/ponytail`, `/i-have-adhd`, `/caveman`)
   vao para `$HOME/OBSIDIAN_VAULT.md`.
 - **12 MOCs** em `50-sistema/57-conhecimento/`.
-- **67 skills** em 8 tiers, cobrindo fluxo de spec, Matt Pocock, infra de agente,
+- **Ciclo de spec OpenSpec** (`openspec/` com `config.yaml`, 5 specs promovidas e as 6
+  skills `openspec-*`) — mudança vira spec antes de virar código.
+- **71 skills** em 8 tiers, cobrindo fluxo de spec, Matt Pocock, infra de agente,
   qualidade, git e duas areas verticais.
 - **12 MOCs** (decision cards) para navegar por area em vez de ler 67 arquivos.
 

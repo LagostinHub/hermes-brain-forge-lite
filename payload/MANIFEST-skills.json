@@ -743,6 +743,46 @@
    "origin": "skills/user-level/remotion-windows-render",
    "sanitized": true,
    "added": "router-dependency"
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "openspec-archive-change",
+   "path": "payload/skills/spec-fluxo/openspec-archive-change",
+   "sha256": "5c928e50f74ab152",
+   "files": 1,
+   "bytes": 10679,
+   "origin": ".agents/skills/openspec-archive-change"
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "openspec-explore",
+   "path": "payload/skills/spec-fluxo/openspec-explore",
+   "sha256": "caa3439da594d9cc",
+   "files": 1,
+   "bytes": 16236,
+   "origin": ".agents/skills/openspec-explore"
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "openspec-sync-specs",
+   "path": "payload/skills/spec-fluxo/openspec-sync-specs",
+   "sha256": "b7388620d5994599",
+   "files": 1,
+   "bytes": 12506,
+   "origin": ".agents/skills/openspec-sync-specs"
+  },
+  {
+   "tier": "T1",
+   "slug": "spec-fluxo",
+   "name": "openspec-update-change",
+   "path": "payload/skills/spec-fluxo/openspec-update-change",
+   "sha256": "f19faf94e7a987bd",
+   "files": 1,
+   "bytes": 6948,
+   "origin": ".agents/skills/openspec-update-change"
   }
  ],
  "mocs": [
@@ -857,5 +897,19 @@
    "forge_original": 85,
    "lite": 78
   }
+ },
+ "openspec": {
+  "config": "openspec/config.yaml",
+  "specs": 5,
+  "changes": "vazio (ciclo novo)",
+  "skills": [
+   "openspec-propose",
+   "openspec-apply-change",
+   "openspec-explore",
+   "openspec-update-change",
+   "openspec-sync-specs",
+   "openspec-archive-change"
+  ],
+  "note": "4 skills e o diretorio openspec/ foram adicionados apos auditoria: o lite nao tinha onde a spec viver"
  }
 }

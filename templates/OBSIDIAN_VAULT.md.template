@@ -36,7 +36,7 @@ Desligam só com "stop ponytail" / "stop adhd mode" / "stop caveman".
 
 # Skills
 
-64 skills em `<SKILLS>`. Roteiro: `/ask-matt`.
+71 skills em `<SKILLS>`. Roteiro: `/ask-matt`.
 
 Spec:  `/openspec-propose` → `/openspec-apply-change`
 Fluxo: `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/implement` → `/code-review`
@@ -49,9 +49,11 @@ SINAIS DE ERRO. São consulta, não execução. Não resuma, não complete lacun
 
 # Specs (onde a spec vive)
 
-Spec no repo, estado no vault.
-Mudança nova = `openspec/changes/<id>/` com `proposal.md`, `design.md`, `tasks.md`,
-`specs/`. Promovida = `openspec/specs/<id>/`.
+Spec no repo, estado no vault. Repo = onde a pessoa trabalha.
+Mudança nova = `openspec/changes/<id>/` com `proposal.md`, `design.md`, `tasks.md`.
+Ciclo: `/openspec-propose` -> `/openspec-apply-change` -> `/openspec-archive-change`.
+Promovida = `openspec/specs/<capability>/spec.md`.
+Estado (card, status, kanban) vive no vault, NUNCA dentro da spec.
 
 # Lei de sanitização (vinculante)
 

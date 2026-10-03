@@ -36,23 +36,46 @@ python faltando: instale OU reporte. Skills não exigem python; o Hermes exige.
 Nunca instale Obsidian aqui.
 
 ## 2 — DIRECTÓRIOS ( crie agora )
-  $HOME/skills/                          67 skills
+  $HOME/skills/                          71 skills
   $HOME/skills/.incoming/                colisões — nunca sobrescreve
   $HOME/rules/                           audit-rules.yaml + o hook
   $VAULT/                                24 zonas (ver secção 6)
+  $REPO/openspec/                        ciclo de spec (ver secção 2b)
+
+  $REPO = o repo onde a pessoa trabalha. Se ela colou o prompt num repo git,
+  use esse. Senão crie ~/openspec-repo e git init.
+
+## 2b — CICLO DE SPEC (OpenSpec)
+  É o que faz mudança de código ser spec antes de ser código.
+  SEM ISSO as skills de spec não têm onde escrever.
+
+  $REPO/openspec/config.yaml            a partir de lite/openspec/config.yaml
+  $REPO/openspec/specs/                  as 5 specs promovidas (lite/openspec/specs/)
+  $REPO/openspec/changes/                VAZIO. toda mudança nova nasce aqui
+  $REPO/.agents/skills/openspec-*        as 6 skills (se a pessoa usa .agents/)
+
+  CYCLE:  /openspec-propose      -> cria changes/<id>/{proposal,design,tasks}.md
+           /openspec-apply-change -> implementa a change
+           /openspec-archive-change -> promove pra specs/<capability>/spec.md
+  APOIO:  /openspec-explore /openspec-update-change /openspec-sync-specs
+
+  REGRA: a spec vive no repo, o ESTADO vive no vault (card no board
+  50-sistema/56-boards/). Nunca promova change sem os testes do tdd.
 Se $HOME/skills/ já existir com skills: NÃO apague. A regra anti-colisão vale.
 
-## 3 — AS 67 SKILLS
+## 3 — AS 71 SKILLS
 Copie lite/payload/skills/<tier>/<nome>/  ->  $HOME/skills/<nome>/
-Não substitua a lista. São 67 nomes em 8 tiers. Baixe na ordem do tier.
+Não substitua a lista. São 71 nomes em 8 tiers. Baixe na ordem do tier.
 
 T0 — REGRAS GERAIS (9) · sempre ativas, toda mensagem, sem exceção
     ponytail        ponytail-review    ponytail-audit     ponytail-debt
     ponytail-gain   ponytail-help      i-have-adhd        caveman
     caveman-commit
-T1 — SPEC E FLUXO (10)
-    openspec-propose   openspec-apply-change   grill-with-docs   grill-me
-    grilling           to-spec      to-tickets     implement        tdd
+T1 — SPEC E FLUXO (14)
+    openspec-propose   openspec-apply-change   openspec-explore
+    openspec-update-change   openspec-sync-specs   openspec-archive-change
+    grill-with-docs   grill-me    grilling
+    to-spec      to-tickets     implement        tdd
     code-review
 T2 — NAVEGAÇÃO E FASE (8)
     ask-matt       handoff     claude-handoff     wait-what
@@ -148,7 +171,7 @@ SE $VAULT ESTÁ VAZIO OU NÃO EXISTE :
   APÓS COPIAR:
   1. lite/payload/mocs/*.md  ->  $VAULT/50-sistema/57-conhecimento/
   2. lite/templates/OBSIDIAN_VAULT.md.template -> $HOME/OBSIDIAN_VAULT.md
-     substitua <SKILLS> por 67 e <VAULT> pelo path real do vault
+     substitua <SKILLS> por 71 e <VAULT> pelo path real do vault
   3. $VAULT/50-sistema/55-convencoes/AGENTS.md é a convenção raiz. Confirme que
      os paths dentro dela batem com $VAULT antes de confiar nela. Se mentionar
      zonas que você não criou, ajuste — o template veio de um vault maior.
@@ -178,7 +201,8 @@ proteção.
   [ ] $HOME/skills/ tem 67 diretórios com SKILL.md
   [ ] nenhum sha256 duplicado entre diretórios de $HOME/skills/
   [ ] $HOME/skills/.incoming/ vazio, ou toda colisão reportada
-  [ ] vault: zonas de vault-template/ copiadas (ou as que faltavam)
+  [ ] openspec/: config.yaml + specs/ (5) + changes/ (vazio) em $REPO
+[ ] vault: zonas de vault-template/ copiadas (ou as que faltavam)
 [ ] vault: 12 MOCs em $VAULT/50-sistema/57-conhecimento/
 [ ] vault: $HOME/OBSIDIAN_VAULT.md escrito com <SKILLS>=67 e <VAULT> real
   [ ] grep -rE 'sk-[A-Za-z0-9-]{10,}|AKIA[A-Z0-9]{16}|ghp_|github_pat_|xox[abprs]-|PRIVATE KEY' $HOME $VAULT -> vazio
