@@ -14,4 +14,7 @@ SOUL.md
 memories/
 scratch/
 
+# Rascunho local — nunca versionado no repo publico
+.drafts/
+
 # SO: o payload e versionado de proposito. Nao adicionar payload/ aqui.

@@ -78,6 +78,7 @@ secret e path de dono, e foi testado contra git real.
 
 ```
 BNF-INSTALL.md          prompt de instalacao (cole no OpenCode)
+BNF-UPGRADE.md          procedimento de upgrade para a versao completa
 payload/skills/         71 skills, sanitizadas
 payload/mocs/           12 decision cards
 payload/MANIFEST-skills.json
@@ -94,6 +95,9 @@ lite. E um procedimento com regra de colisao, plano aprovado e re-verificacao:
 
 **[`BNF-UPGRADE.md`](BNF-UPGRADE.md)** — diagnostico do estado atual, copia com
 colisao em `.incoming/`, sanitizacao, spec nova vira change nova, e rollback.
+
+O `BNF-INSTALL.md` tem **um prompt so** — o install. O upgrade nao vem embutido:
+ele depende da arvore completa do sistema, que nao e distribuida aqui.
 
 O que o upgrade faz e so **adicionar**: skills, specs, zonas e conectores que o
 lite nao traz. Nada do que ja esta instalado e sobrescrito, entao o rollback e
