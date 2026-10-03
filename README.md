@@ -30,7 +30,7 @@ redundante quando voce ja esta aqui.
   skills `openspec-*`) — mudança vira spec antes de virar código.
 - **71 skills** em 8 tiers, cobrindo fluxo de spec, Matt Pocock, infra de agente,
   qualidade, git e duas areas verticais.
-- **12 MOCs** (decision cards) para navegar por area em vez de ler 67 arquivos.
+- **12 MOCs** (decision cards) para navegar por area em vez de ler 71 arquivos.
 
 ## Os 8 tiers
 
@@ -44,7 +44,7 @@ redundante quando voce ja esta aqui.
 | T5 git-github | 7 | 88.6 KB | github-*, git-commit, worktrees |
 | T6a vertical-dev | 6 | 426.7 KB | frontend-design, accessibility, vercel-react-* |
 | T6b vertical-video | 14 | 2.88 MB | cinema-geral-decisions, film-decupage, film-editing + cluster Remotion |
-| **TOTAL** | **67** | **3.75 MB** | |
+| **TOTAL** | **71** | **3.75 MB** | |
 | MOCs | 12 | 281.6 KB | knowledge de consulta |
 
 > **Sobre o peso:** T6b (video/Remotion) sozinho e 2,88 MB — 77% do payload. Se
@@ -78,7 +78,7 @@ secret e path de dono, e foi testado contra git real.
 
 ```
 BNF-INSTALL.md          prompt de instalacao (cole no OpenCode)
-payload/skills/         67 skills, sanitizadas
+payload/skills/         71 skills, sanitizadas
 payload/mocs/           12 decision cards
 payload/MANIFEST-skills.json
 templates/              config.yaml, env e OBSIDIAN_VAULT.md (valores vazios)
@@ -90,10 +90,14 @@ hooks/                  bnf-lite-audit.sh (pre-commit)
 ## Upgrade
 
 O upgrade para a versao completa e um passo **separado** e nao acontece no install
-lite. A versao completa traz o restante das areas, os conectores e a curacao
-completa de skills. O lite deja a porta aberta: as skills vivem em
-`~/.hermes/skills/` com a mesma estrutura de tiers, entao adicionar e apenas
-copiar a pasta da skill.
+lite. E um procedimento com regra de colisao, plano aprovado e re-verificacao:
+
+**[`BNF-UPGRADE.md`](BNF-UPGRADE.md)** — diagnostico do estado atual, copia com
+colisao em `.incoming/`, sanitizacao, spec nova vira change nova, e rollback.
+
+O que o upgrade faz e so **adicionar**: skills, specs, zonas e conectores que o
+lite nao traz. Nada do que ja esta instalado e sobrescrito, entao o rollback e
+deletar o que entrou.
 
 ## Licenca
 

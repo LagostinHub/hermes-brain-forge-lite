@@ -1,6 +1,6 @@
 # BNF-LITE — PROMPT DE INSTALAÇÃO ( versão final )
 
-> **Autocontido.** O payload — 67 skills, 12 MOCs, templates, regras, gate — está
+> **Autocontido.** O payload — 71 skills, 12 MOCs, templates, regras, gate — está
 > em `lite/payload/`, neste repo. Zero URL, zero rede, zero `gh auth`, zero repo externo.
 > Confirme que você está na raiz do repo: `ls lite/payload/MANIFEST-skills.json`.
 > Payload sanitizado: zero nome de cliente, zero path de dono, zero secret.
@@ -18,7 +18,7 @@ Instale o BNF-LITE. Você é o instalador. Execute, não descreva.
 
 ## 0 — CONFIRME O PAYLOAD ( antes de tudo )
   [ ] ls lite/payload/MANIFEST-skills.json
-  [ ] leia lite/payload/MANIFEST-skills.json  -> 67 skills + 12 MOCs
+  [ ] leia lite/payload/MANIFEST-skills.json  -> 71 skills + 12 MOCs
 Se o payload não estiver aí: PARE. Diga ao usuário que este prompt precisa do
 repo. Não tente clonar nada, não baixe de URL, não procure fonte alternativa.
 
@@ -52,7 +52,19 @@ Nunca instale Obsidian aqui.
   $REPO/openspec/config.yaml            a partir de lite/openspec/config.yaml
   $REPO/openspec/specs/                  as 5 specs promovidas (lite/openspec/specs/)
   $REPO/openspec/changes/                VAZIO. toda mudança nova nasce aqui
-  $REPO/.agents/skills/openspec-*        as 6 skills (se a pessoa usa .agents/)
+
+  AS 6 SKILLS OPENSPEC ( spec-fluxo/ ) — instale em DOIS lugares:
+    $HOME/skills/openspec-*/             para o Hermes carregar
+    $REPO/.agents/skills/openspec-*/     para quem trabalha por .agents/
+  Os dois. Cópia, não link — o repo pode ser de outra máquina.
+
+  CLI OBRIGATÓRIO: as skills rodam `openspec:*` via Bash. Sem o CLI elas são
+  texto morto.
+    node --version  ->  se faltar: winget install OpenJS.NodeJS.LTS (ou brew)
+    npm install -g @fission-ai/openspec   (NÃO é "openspec" — esse pacote é
+                                          placeholder 0.0.0 e não funciona)
+    openspec --version  ->  confirme que respondeu
+   Falhou: reporte e prossiga com as skills. Não bloqueie a instalação.
 
   CYCLE:  /openspec-propose      -> cria changes/<id>/{proposal,design,tasks}.md
            /openspec-apply-change -> implementa a change
@@ -198,13 +210,15 @@ antes de seguir. Hook que existe mas não bloqueia é pior que não ter: parece
 proteção.
 
 ## 9 — VERIFICAÇÃO
-  [ ] $HOME/skills/ tem 67 diretórios com SKILL.md
+  [ ] $HOME/skills/ tem 71 diretórios com SKILL.md
   [ ] nenhum sha256 duplicado entre diretórios de $HOME/skills/
   [ ] $HOME/skills/.incoming/ vazio, ou toda colisão reportada
-  [ ] openspec/: config.yaml + specs/ (5) + changes/ (vazio) em $REPO
+  [ ] openspec CLI: `openspec --version` respondeu (npm i -g @fission-ai/openspec)
+[ ] openspec/: config.yaml + specs/ (5) + changes/ (vazio) em $REPO
+[ ] 6 skills openspec-* em $HOME/skills/ E em $REPO/.agents/skills/
 [ ] vault: zonas de vault-template/ copiadas (ou as que faltavam)
 [ ] vault: 12 MOCs em $VAULT/50-sistema/57-conhecimento/
-[ ] vault: $HOME/OBSIDIAN_VAULT.md escrito com <SKILLS>=67 e <VAULT> real
+[ ] vault: $HOME/OBSIDIAN_VAULT.md escrito com <SKILLS>=71 e <VAULT> real
   [ ] grep -rE 'sk-[A-Za-z0-9-]{10,}|AKIA[A-Z0-9]{16}|ghp_|github_pat_|xox[abprs]-|PRIVATE KEY' $HOME $VAULT -> vazio
   [ ] grep -rE 'C:\\(AI|Users)' $HOME/skills $HOME/rules -> vazio
   [ ] $HOME/config.yaml SEM mcp_servers, personalities, kanban, plugins
@@ -221,7 +235,7 @@ RED    = segredo ou path de dono vazou. NÃO SIGA. Diga arquivo e linha.
         "limpar": half-apagado é pior que não instalado.
 
 ## 11 — RELATÓRIO
-  67 skills em <path> · 12 MOCs em <path> · colisões: N
+  71 skills em <path> · 12 MOCs em <path> · colisões: N
   Diga: "Lite pronto. O Prompt 2 traz o resto quando quiser."
 ```
 
@@ -240,15 +254,15 @@ Sem URL alternativa, sem clone externo.
 HOME / VAULT : mesma derivação do Prompt 1. Use OBSIDIAN_VAULT_PATH se existir.
 
 ## 1 — BASELINE ( antes de qualquer escrita )
-Liste as 67 skills de $HOME/skills/ com o sha256 de cada SKILL.md.
+Liste as 71 skills de $HOME/skills/ com o sha256 de cada SKILL.md.
 Salve em $HOME/.bnf-upgrade-baseline.json.
 Esse arquivo É o rollback. Sem ele, não comece.
 
 ## 2 — DIFF, SEM INSTALAR
 Copie skills/hermes-tree/ e skills/user-level/ para $TMPDIR/bnf-full/.
-Compare as 67 do baseline contra as do full:
-  [ ] as 67 existem no full
-  [ ] sha256 IDÊNTICO nas 67
+Compare as 71 do baseline contra as do full:
+  [ ] as 71 existem no full
+  [ ] sha256 IDÊNTICO nas 71
       -> alguma divergiu: o full é um fork do lite. PARE. Mostre o diff de 3
          linhas. Pergunte: upgrade ou manter o lite? NÃO sobrescreva sem resposta.
   [ ] quantas são NOVAS (full menos lite) -> reporte o número
@@ -266,7 +280,7 @@ Mesma regra anti-colisão do Prompt 1: sha igual -> pula; diferente -> .incoming
 
 ## 5 — ATUALIZE O AGENTE
 Em $HOME/OBSIDIAN_VAULT.md, seção # Skills:
- 67 -> 515
+ 71 -> 515
   Roteiro: /ask-matt
   Spec:   /openspec-propose -> /openspec-apply-change
   Fluxo:  /grill-with-docs -> /to-spec -> /to-tickets -> /implement -> /code-review
@@ -281,7 +295,7 @@ Prove que ainda bloqueia: crie, commite, espere a rejeição, apague.
 
 ## 7 — VERIFICAÇÃO
   [ ] $HOME/skills/ tem 515 diretórios com SKILL.md
-  [ ] as 67 do baseline com sha256 IDÊNTICO
+  [ ] as 71 do baseline com sha256 IDÊNTICO
   [ ] grep de segredo -> vazio
   [ ] grep de path de dono -> vazio
   [ ] 4 zonas copiadas, 5 excluídas intactas
@@ -292,7 +306,7 @@ Prove que ainda bloqueia: crie, commite, espere a rejeição, apague.
 GREEN / YELLOW / RED. Em RED: reverta usando .bnf-upgrade-baseline.json.
 
 ## SE PRECISAR VOLTAR
-Apague o que o full adicionou (515 menos 67) e restaure as 67 do baseline.
+Apague o que o full adicionou (515 menos 71) e restaure as 71 do baseline.
 ```
 
 ---
@@ -309,7 +323,7 @@ T5 git-github           7 skills     88,6 KB    15 files
 T6a vertical-dev        6 skills    426,7 KB   104 files
 T6b vertical-video     14 skills  2.856,6 KB   268 files
                    ---
-TOTAL SKILLS           67 skills    3,66 MB
+TOTAL SKILLS           71 skills    3,93 MB
 T7 MOCs                12 files     281,6 KB
                    ---
 PAYLOAD               498 arquivos   3,93 MB
@@ -328,7 +342,7 @@ T6b = 78% do peso. As 5 mais pesadas:
 ## Versão enxuta: medida e rejeitada
 
 Cortar para `SKILL.md` + pointer chain transitivo dá **-14%** (3,93 → 3,40 MB) e
-mutilaria `careful` (-73%) e `remotion-film-overlays` (-55%). **48 das 67 skills
+mutilaria `careful` (-73%) e `remotion-film-overlays` (-55%). **48 das 71 skills
 saem 100% intactas.** Não compensa o risco.
 
 Os dois "routers" (`remotion-best-practices`, `creative-motion`) **não podem ser

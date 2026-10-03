@@ -901,7 +901,7 @@
  "openspec": {
   "config": "openspec/config.yaml",
   "specs": 5,
-  "changes": "vazio (ciclo novo)",
+  "changes": "vazio, com README explicando o ciclo",
   "skills": [
    "openspec-propose",
    "openspec-apply-change",
