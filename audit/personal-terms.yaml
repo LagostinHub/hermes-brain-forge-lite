@@ -1,0 +1,38 @@
+# personal-terms.yaml — flat blocklist of personal/client terms ( consumed by both scan runners ).
+# Matching semantics (identical in scan-personal-data.ps1 and scan-personal-data.sh):
+#   - term is pure [A-Za-z0-9]+        -> case-insensitive word-boundary match
+#   - term contains any other char     -> case-insensitive substring (fixed-string) match
+# This file is on the scan allowlist (it IS the blocklist). Do not remove entries without
+# updating the fixtures in audit/fixtures/ so every term keeps firing.
+# Task 2.3 minimum list + the live-vault zone tokens for excluded zones.
+- camila
+- gonda
+- tarrafa
+- lagostin
+# 'ney' REMOVED 2026-10-10: it is a substring of Disney, Journey, Vogner, Whitney -
+# measured 398 false-positive hits in the built template alone (all 'Disney'/'Journey'
+# in the craft-book corpus). The real client slug is 'ney-leprevost', which the
+# 'leprevost' term below already covers on its own; a bare 'ney' was never the
+# detection that mattered.
+- ney-leprevost
+# Composite slugs (2026-10-10): a word boundary never fires inside a joined token, so
+# 'camillagonda' (the Instagram handle), 'camillakan' (the board domain) and
+# 'lagostinhub' (the GitHub org) all passed the \bcamilla\b / \blagostin\b rules.
+# Measured in the built template: 9 camilla + 2 lagostin hits the gate reported clean.
+- camillagonda
+- camillakan
+- lagostinhub
+- leprevost
+- beatstep
+- gnnss777
+- gnnssart
+- onedrive
+- C:\Users\gnnss
+- 40-pessoal
+- diario
+# diário (accented) removed 2026-09-20: substring match false-positives on common
+# Portuguese words (Intermediário). Word-boundary coverage is now supplied by the
+# ci:true zone-diary-filename rule (rules.yaml). Literal diary paths still match
+# via the plain `diario` term above (word-boundary).
+- 10-clientes
+- 20-projetos

@@ -1,0 +1,346 @@
+# zone-map.yaml - machine-readable curation table for the GNNSS vault.
+# Single source of truth for what ships into vault-template/ and how.
+# Consumed by: skeleton build (scripts/build-skeleton.ps1, task 3.1), forge-refresh (future), audit gate.
+#
+# SCHEMA v2 (task 3.1) - FLAT, one entry per vault path (dir or file), no nesting.
+# Rationale (ponytail rule): the v1 nested subzones shape forced an indent-aware YAML
+# parser; the data was flattened instead of growing parser complexity. Every v1
+# disposition is preserved; new entries added by the gate-driven curation pass are
+# marked with a `gate:` reason below.
+#
+# YAML subset used (parsers must support exactly this):
+#   - full-line comments (#), 2-space indented lists/maps, single-quoted scalars
+#   - top-level scalars: version, vault_source_env, scanned, skeleton_dir, default_disposition
+#   - zones: list of maps; each item = path + fields + scalar lists
+#   - fields: path, disposition, copy, pack, kind, reason, note, placeholder_note
+#   - scalar lists: include_files, exclude, exclude_files, exclude_dirs
+#
+# Entry semantics:
+#   disposition: excluded      -> ships nothing; if `pack:` is set, the pack dir is
+#                                 copied into the zone dir (placeholder shell)
+#   disposition: included      -> copy: verbatim (recursive copy, minus exclude_dirs/
+#                                 exclude_files) or copy: file-whitelist (only
+#                                 include_files)
+#   disposition: placeholder   -> dir with pack: ships ONLY the pack (never live
+#                                 content, not even filenames); root-moc file:
+#                                 template-ized (see template-ops.yaml)
+#   disposition: not_present   -> recorded for spec parity; build skips silently
+#
+# Ground truth: live vault scanned 2026-09-02 (vault root resolved from env GNNSS_VAULT).
+# Spec naming deltas vs live vault (recorded, not edited in spec):
+#   - spec/config say "00-inbox"        -> live zone is "00-captura" (same Johnny.Decimal zone)
+#   - spec says top-level "80-templates" -> NOT PRESENT in live vault; templates live at
+#     "50-sistema/53-templates"
+#   - spec says root "Dashboard.md"     -> NOT PRESENT in live vault; only "Mapa.md" exists
+
+version: 2
+vault_source_env: GNNSS_VAULT
+scanned: '2026-09-02'
+skeleton_dir: 'vault-template'
+default_disposition: excluded
+
+zones:
+  # ---------------------------------------------------------------- EXCLUDED
+  - path: '00-captura'
+    disposition: excluded
+    reason: 'Capture zone contains client portfolio and personal notes.'
+    placeholder_note: 'Placeholder — 00-captura'
+    pack: 'audit/placeholder-packs/00-captura'
+
+  - path: '10-clientes'
+    disposition: excluded
+    reason: 'Client zone. Client names and project content must never ship.'
+    placeholder_note: 'Placeholder — 10-clientes'
+    pack: 'audit/placeholder-packs/10-clientes'
+
+  - path: '20-projetos'
+    disposition: excluded
+    reason: 'Project zone. Real project content must never ship.'
+    placeholder_note: 'Placeholder — 20-projetos'
+    pack: 'audit/placeholder-packs/20-projetos'
+
+  - path: '40-pessoal'
+    disposition: excluded
+    reason: 'Personal zone (diaries, private notes). Must never ship.'
+    placeholder_note: 'Placeholder — 40-pessoal'
+    pack: 'audit/placeholder-packs/40-pessoal'
+
+  - path: '90-arquivo'
+    disposition: excluded
+    reason: 'Archive zone. Historical personal/client content; ships empty.'
+    placeholder_note: 'Placeholder — 90-arquivo'
+    pack: 'audit/placeholder-packs/90-arquivo'
+
+  # ------------------------------------------------------- NON-ZONE (excluded)
+  - path: 'docs'
+    disposition: excluded
+    kind: not-a-vault-zone
+    reason: 'Agent working docs (machine-local). Agent knowledge ships via configs/ and skills/ trees instead.'
+
+  - path: '.agents'
+    disposition: excluded
+    kind: not-a-vault-zone
+    reason: 'Vault-scoped agent skill overlay (machine state). Vendored via skills distribution (task 5.x), not via the vault skeleton.'
+
+  - path: '.claude'
+    disposition: excluded
+    kind: not-a-vault-zone
+    reason: 'Vault-scoped agent skill overlay (machine state). Same handling as .agents.'
+
+  - path: '.opencode'
+    disposition: excluded
+    kind: not-a-vault-zone
+    reason: 'Vault-scoped agent skill overlay (machine state). Same handling as .agents.'
+
+  - path: '.smart-env'
+    disposition: excluded
+    kind: not-a-vault-zone
+    reason: 'Smart Connections plugin cache/embeddings. Machine-local, regenerable.'
+
+  - path: '.git'
+    disposition: excluded
+    kind: not-a-vault-zone
+    reason: 'Vault git metadata. Installed vault gets its own git via Obsidian Git plugin.'
+
+  # ---------------------------------------------------------------- INCLUDED
+  - path: '08-filmes'
+    disposition: included
+    redact: shared
+    copy: file-whitelist
+    gate: 'Film knowledge zone (unified 2026-09-21): generic methodology MDs moved here from 30-sistema/35-tarrafa (decupagem cinematografica, prompt engineering learnings) plus the generic ComfyUI FLUX camera workflow. The tarraf/ subfolder is a client slug - file-whitelist copies flat so the folder name never ships; film-specific shot decks/prompts/PDFs stay in 30-sistema (unmapped, default excluded).'
+    include_files:
+      - '35.02-DECUPAGEM-CINEMATOGRAFICA.md'
+      - '35.03-PROMPT-ENGINEERING.md'
+      - 'tarraf/ComfyUI_FLUX_Camera_Workflow.md'
+
+  - path: '28-books'
+    disposition: included
+    copy: verbatim
+    gate: 'Craft book texts (McKee Story, Animators Survival Kit, compiled rules). Generic craft knowledge; film citations are public domain references. NOTE: full copyrighted book texts ship - owner-accepted risk, gate checks personal data only.'
+    reason: 'Curated craft/book knowledge requested for the forge (28-books e importante).'
+
+  - path: '30-conhecimento'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'Curated knowledge base; the core of the Second Brain methodology.'
+    gate: 'every copied file passes the sanitization scan'
+    exclude_dirs:
+      - '37-regras-e-decisoes/_archive'
+      - '33-marketing/nimek-performance-instagram/dados/scripts/__pycache__'
+
+  - path: '30-conhecimento/32-video-remotion'
+    disposition: included
+    copy: file-whitelist
+    reason: 'gate: category is dominated by client project notes (camila/ney-leprevost/waid MOCs and production notes). Whitelist direction: only generic tool/render knowledge ships; new notes stay local by default (zone exclusion is the primary defense). 32.01-cine-studio-dashboard-render.md and 32.20-smoke-ninja-cat.md removed from the whitelist (fix wave): client creative IP / design tokens - 32.01 carries client design tokens (waidGold/MILA) and C:\AI\waid repo paths; 32.20 carries a full client story synopsis (roteiro).'
+    include_files:
+      - '32.10-erm-moc.md'
+      - '32.16-wod-moc.md'
+      - '32.21-workflow-cinematic-ref-upscale-2k.md'
+
+  - path: '30-conhecimento/31-ia-e-agentes'
+    disposition: included
+    copy: verbatim
+    reason: 'AI/agents knowledge.'
+    gate: 'Dated session notes (2026-08-21-*) excluded: working-log artifacts whose only inbound was the 35.03 wiki index (orphans in the skeleton); same category as the excluded Brain Reviews.'
+    exclude_files:
+      - '2026-08-21-animatediff-i2v-blocked.md'
+      - '2026-08-21-animatediff-smoke.md'
+      - '2026-08-21-ltx-smoke-block.md'
+      - '2026-08-21-mattpocock-setup.md'
+      - '2026-08-21-mattpocock-skills.md'
+      - '2026-08-21-spec-pipeline-i2v.md'
+      - '2026-08-21-status-final.md'
+
+  - path: '30-conhecimento/36-seguranca'
+    disposition: included
+    copy: verbatim
+    reason: 'Security knowledge zone.'
+    gate: '36.01-auditoria-curseduca.md excluded: client security audit containing real inline API key material (secret-inline-api-key, critical).'
+    exclude_files:
+      - '36.01-auditoria-curseduca.md'
+
+  - path: '50-sistema'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'Conventions, templates, scripts, agent config docs, boards.'
+    gate: '51-skills/camila-approval-workflow.md excluded (full gate pass): client-specific approval workflow (camila) under the vendored skill catalog dir - client content in a dir otherwise shipped empty.'
+    exclude_files:
+      - '51-skills/camila-approval-workflow.md'
+
+  - path: '50-sistema/52-agent-config'
+    disposition: included
+    copy: verbatim
+    reason: 'Agent system documentation (Hermes, workflows, identity).'
+    gate: 'Skills/ excluded: machine-local skill catalog mirror (owner paths in every frontmatter, one critical secret-shape hit; real skills ship post-cleanup via the skills distribution, task 5.x - same rationale as .agents). Configs/ excluded: verbatim config notes carrying real API keys and owner paths; the repo ships configs/ as placeholder templates instead (design decision 11). Brain Reviews and skills research/reports excluded: dated session logs with client data. 52.11-skills-mapa excluded: map of the excluded Skills catalog. 52.09-discord-mapa-canais.md excluded (fix wave): personal Discord/life data, semantic review - dating-coaching history naming third parties, personal Discord server ID and username; a semantic class the regex gate cannot catch. 52.06-wod.md excluded (fix wave): full real-project brief (D:\WoD schema/seed) - real project content. Context Pack files excluded (full gate pass): 13 client/project-named packs (ahk1_portable, beatstep-research, camila-2026, camilla-2026, camilla-2026-catalog-preview, camilla-2026-docs-sync, hermes-brain-forge, lagostin, ney-leprevost, resolve-mcp, tarrafa, waid, wod) carry client names/owner paths (tool-generic packs ace-step, ahk1, brain-framework, career-ops, cineweave, davinci-resolve-mcp, hermes, hermes-workspace, metronome, sfx-studio ship clean) - the RAG context-pack genre is machine-local by design and post-dates the placeholder-shell policy; the conventions/notebooks they fed (52.22, 55-convencoes) already ship redacted. Migration Log + 2 dated Session logs excluded: working-log artifacts with zone paths and client data (same class as the Brain Reviews).'
+    exclude_dirs:
+      - 'Skills'
+      - 'Configs'
+    exclude_files:
+      - 'Brain Review 2026-08-27.md'
+      - 'Brain Review 2026-08-31.md'
+      - '52.11-skills-mapa.md'
+      - '52.12-skills-research-2026-08-31.md'
+      - '52.09-discord-mapa-canais.md'
+      - '52.06-wod.md'
+      - 'ahk1_portable - Context Pack.md'
+      - 'beatstep-research - Context Pack.md'
+      - 'camila-2026 - Context Pack.md'
+      - 'camilla-2026 - Context Pack.md'
+      - 'camilla-2026-catalog-preview - Context Pack.md'
+      - 'camilla-2026-docs-sync - Context Pack.md'
+      - 'hermes-brain-forge - Context Pack.md'
+      - 'lagostin - Context Pack.md'
+      - 'ney-leprevost - Context Pack.md'
+      - 'resolve-mcp - Context Pack.md'
+      - 'tarrafa - Context Pack.md'
+      - 'waid - Context Pack.md'
+      - 'wod - Context Pack.md'
+      - 'Migration Log - gbrain to OpenViking.md'
+      - 'Session - 2026-09-09 Hermes brain consolidation.md'
+      - 'Session - 2026-09-19 Mega Review Audiovisual.md'
+
+  - path: '50-sistema/53-templates'
+    disposition: included
+    copy: verbatim
+    note: 'This is the templates zone the spec calls 80-templates.'
+
+  - path: '50-sistema/54-scripts'
+    disposition: included
+    copy: verbatim
+    note: 'Source of the original check-links.ps1 (task 3.4, single source, never a fork).'
+    gate: 'reorg/repair-links.ps1 excluded: one-off reorg tool with hardcoded client name mappings (camila). reorg/repair-links2.ps1 and reorg/move-log.txt excluded: same one-off reorg session artifacts.'
+    exclude_files:
+      - 'reorg/repair-links.ps1'
+      - 'reorg/repair-links2.ps1'
+      - 'reorg/move-log.txt'
+
+  - path: '50-sistema/55-convencoes'
+    disposition: included
+    copy: verbatim
+    reason: 'Vault conventions (methodology).'
+    gate: 'TEMPLATE - Decisao.md excluded: despite the name it is a real client decision record (CAMILA Survey Manager, migrations, RLS details) - client content misfiled in conventions. Client-name mentions in the remaining convention notes are redacted at build time (audit/template-ops.yaml); zone-token references in Operating Rules/Tag Taxonomy are allowlisted in rules.yaml as structural taxonomy. Second Brain Rollout.md excluded (fix wave): dated rollout session log with owner machine paths - same class as the other excluded dated logs.'
+    exclude_files:
+      - 'TEMPLATE - Decisao.md'
+      - 'Second Brain Rollout.md'
+
+  - path: '50-sistema/56-boards'
+    disposition: placeholder
+    reason: 'Live boards embed client names in card links AND in board filenames. Ships as EMPTY template boards: structure (kanban columns, frontmatter) with placeholder cards only; client-named board files are redacted to generic template names.'
+    pack: 'audit/placeholder-packs/boards'
+    strategy: 'Ship generic board files (Kanban Template, Project Board, Second Brain Kanban, dashboards, projects.base) with placeholder cards only. No live board content, no client-named filenames.'
+
+  - path: '.obsidian'
+    disposition: included
+    redact: shared
+    copy: file-whitelist
+    reason: 'Curated plugin set and app settings. Machine-specific state excluded (Obsidian rewrites workspace/graph on reload).'
+    gate: 'bookmarks.json moved from whitelist to exclude (gate): it embeds client project tags (project/camila-2026, project/ney-leprevost, project/beatstep) in graph color groups plus a stale machine bookmark - user state, regenerable on the installed machine.'
+    include_files:
+      - 'app.json'
+      - 'appearance.json'
+      - 'community-plugins.json'
+      - 'core-plugins.json'
+      - 'types.json'
+    exclude:
+      - 'workspace.json'
+      - 'workspace.json.bak'
+      - 'workspace-mobile.json'
+      - 'graph.json'
+      - 'bookmarks.json'
+      - 'image-converter-image-alignments.json'
+      - 'plugins/'
+      - 'cache/'
+
+  # ------------------------------------------------------------- ROOT FILES
+  - path: 'Mapa.md'
+    disposition: placeholder
+    kind: root-moc
+    reason: 'Master index (root MOC). Ships template-ized: zone index preserved; links into excluded zones resolve to the zone placeholder notes.'
+    strategy: 'Copy structure, replace excluded-zone link targets with the zone placeholder notes; keep Johnny.Decimal legend. Client-name example in the legend redacted via shared template ops.'
+
+  - path: 'Dashboard.md'
+    disposition: not_present
+    kind: root-moc
+    note: 'Named in the task/spec but NOT PRESENT in the live vault (scanned 2026-09-02). Recorded for parity; build must not fail on it. If it appears later, treat like Mapa.md (placeholder).'
+
+  - path: '80-templates'
+    disposition: not_present
+    note: 'Named in the task/spec but NOT PRESENT as a top-level zone; templates live at 50-sistema/53-templates (see 50-sistema/53-templates entry).'
+
+  # ============================================================ ZONE REFRESH
+  # Rescan 2026-10-10 (task: vault->forge sync). The vault reorganized since the
+  # 2026-09-02 census: 11 new top-level zones appeared and the old zone-map knew
+  # none of them, so the build silently never copied them. Dispositions below were
+  # decided against the measured scan (gate run over the live vault, 8830 hits /
+  # 1301 files) - a zone ships only when its content is generic knowledge.
+  #
+  # The scan ALSO exposed that the per-rule scopes (rules.yaml) enumerated only the
+  # 12 zones the map knew, so the gate was BLIND to every new zone (a planted client
+  # name in 30-sistema/ scanned 0 hits). Scopes now enumerate all zones; this map
+  # and those scopes must be updated together.
+
+  - path: '28-filmes'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'Craft rules extracted from film-editing books (Murch, etc.). Generic methodology, zero personal terms (scanned clean).'
+    gate: 'scanned 2026-10-10: 0 hits.'
+
+  - path: '40-projetos'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'OSS research notes (wan/ltx/freevideo on 16GB VRAM). Generic technical knowledge.'
+    gate: '2026-10-10 scan: 6 hits / 4 files. Rows carry the tarrafa client slug as a WORKED EXAMPLE (a research session that happened to run on a client film). Two options were considered: exclude the dir, or redact the 4 rows. Redaction chosen - the notes are otherwise clean technical research and the slug is incidental prose, not content. Per-file ops added to template-ops.yaml.'
+    exclude_files: []
+
+  - path: '50-conhecimento'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'Skill router (35.10-roteador-skills): 13 domain docs that route a request to the right skill. Core Second Brain methodology, high distribution value.'
+    gate: '2026-10-10 scan: 23 hits / 6 files, all client names appearing as EXAMPLES inside routing prose (gonda/camila/tarrafa). Redacted at build time via template-ops per-file entries; the router keeps its methodology. Owner paths in 00-README.md also redacted.'
+
+  - path: '60-agent-knowledge'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'Agent knowledge hub (daily-digest script + README, skills README). Generic agent infrastructure.'
+    gate: 'scanned 2026-10-10: 0 hits.'
+
+  - path: 'MOCs'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'MOC index (README) - the generated map of all 49 vault MOCs. Structural navigation knowledge.'
+    gate: '2026-10-10 scan: 28 hits / 1 file. The README is an index of MOC FILENAMES, so client-named MOCs (32.08-camila-2026-moc, 23.00-lagostin-fcmanager-moc, 28.00-tarrafa-moc, 32.14-ney-leprevost-moc) appear as table rows. Those rows are dropped at build time (the target files do not ship); zone-path rows into excluded zones are also dropped. Per-file ops added to template-ops.yaml.'
+
+  - path: 'scripts'
+    disposition: included
+    redact: shared
+    copy: verbatim
+    reason: 'sync-skills.sh - a NEUTRALIZED script kept deliberately as a documented error record (it explains why the vault is not a skill source). The lesson is generic and worth shipping.'
+    gate: '2026-10-10 scan: 3 hits / 1 file, all in the comment block that names the owner runtime path as the explanation of the error. Redacted at build time via template-ops per-file entry; the lesson survives.'
+
+  - path: '30-sistema'
+    disposition: excluded
+    reason: 'Contains only 35-tarrafa/ - a live client film project (shot decks, PDFs, Flow instructions, character cards). 164 hits / 12 files, all client. Real project content must never ship.'
+    gate: '2026-10-10: measured 100% client content; nothing generic to salvage. Zone excluded wholesale.'
+
+  - path: 'TaskNotes'
+    disposition: excluded
+    reason: 'TaskNotes plugin state (Views/*.base, Start Here). Machine-local plugin configuration, regenerable on the installed machine - same category as .obsidian workspace state.'
+
+  - path: 'scratch'
+    disposition: excluded
+    reason: 'Working scratch (sub-Ag-B-provenance.md). Machine-local by definition.'
+
+  - path: 'openspec'
+    disposition: excluded
+    reason: 'Vault-local OpenSpec changes (guinness-site issues). Vault-scoped governance, not distributable system knowledge - same category as the repo-side openspec/** allowlist entry.'
+
+  - path: 'skills'
+    disposition: excluded
+    reason: 'Vault-scoped skill overlay (legal/br-locacao-guia). Skills ship via the skills distribution trees, never via the vault skeleton - same rationale as the .agents/.claude/.opencode entries above.'

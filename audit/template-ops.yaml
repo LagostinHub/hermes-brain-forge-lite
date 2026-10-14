@@ -1,0 +1,912 @@
+# template-ops.yaml - build-time content operations for template-ized files (task 3.1).
+# Data consumed by scripts/build-skeleton.ps1. Runners stay thin: this file declares
+# WHICH files get template-ized and the exact line drops / regex replacements applied.
+#
+# Why template-ize: the sanitization gate (audit/rules.yaml) must report 0 hits over
+# vault-template/ while conventions/knowledge notes keep their methodology value.
+# Client names become generic cliente-a/cliente-b placeholders, owner machine paths
+# become %USERPROFILE%, and diary wording becomes neutral "registro". Zone tokens in
+# Operating Rules / Tag Taxonomy are structural taxonomy and are allowlisted in
+# rules.yaml instead of rewritten.
+#
+# YAML subset: same flat engine as zone-map.yaml (comments, 2-space lists/maps,
+# single-quoted scalars). Fields:
+#   shared_replace: ordered regex pair list applied AFTER a file's own pairs.
+#   files: list of { path (vault-template-relative), drop: [line substrings],
+#                    replace: ordered regex pair list }
+# Replacement 'to' values may contain \n (converted to a newline by the builder).
+# 'from' values are .NET regex (Escape metacharacters); matching is case-sensitive.
+# NOTE: the live vault uses em dashes (U+2014) in prose; drop/replace substrings
+# below copy them verbatim (this file is UTF-8, non-ASCII allowed in data).
+
+shared_replace:
+  # -- client A (person + project slug); longest/most specific first --------------
+  - from: '32\.08-camila-2026-moc\.md'
+    to: '32.08-projeto-moc.md'
+  - from: '\bCamila Gonda\b'
+    to: 'Cliente A'
+  - from: '\bcamila-gonda\b'
+    to: 'cliente-a'
+  - from: '\bCAMILA GONDA\b'
+    to: 'CLIENTE A'
+  - from: '\bcamila-2026\b'
+    to: 'cliente-a'
+  - from: '\bCamila\b'
+    to: 'Cliente A'
+  - from: '\bCAMILA\b'
+    to: 'CLIENTE A'
+  - from: '\bcamila\b'
+    to: 'cliente-a'
+  # camila_lettering is a single word-char slug (underscore blocks \bcamila\b);
+  # explicit pair so the lettering asset path never leaks the client slug.
+  - from: 'camila_lettering'
+    to: 'cliente-a_lettering'
+  - from: '\bGonda\b'
+    to: 'Cliente A'
+  - from: '\bGONDA\b'
+    to: 'CLIENTE A'
+  - from: '\bgonda\b'
+    to: 'cliente-a'
+  # -- client B (person + project slug) -------------------------------------------
+  - from: '\bNey Leprevost\b'
+    to: 'Cliente B'
+  - from: '\bney-leprevost\b'
+    to: 'cliente-b'
+  - from: '\bNey\b'
+    to: 'Cliente B'
+  - from: '\bney\b'
+    to: 'cliente-b'
+  - from: '\bLeprevost\b'
+    to: 'Cliente B'
+  - from: '\bleprevost\b'
+    to: 'cliente-b'
+  # -- film project brand (Tarrafa Creative film) -> Cliente C -----------------------
+  # Film methodology MDs moved to 08-filmes (zone-map gate pass 2026-09-21) keep
+  # their methodology value with the brand redacted; longest/slug forms first.
+  - from: '\bTarrafa Creative\b'
+    to: 'Cliente C'
+  - from: '\bTARRAFA CREATIVE\b'
+    to: 'CLIENTE C'
+  - from: '\bTarrafa\b'
+    to: 'Cliente C'
+  - from: '\bTARRAFA\b'
+    to: 'CLIENTE C'
+  - from: '\btarrafa\b'
+    to: 'cliente-c'
+  - from: '\bTarraf\b'
+    to: 'Cliente C'
+  - from: '\btarraf\b'
+    to: 'cliente-c'
+  # tarrafa_* slug form: underscore blocks \b so the pairs above cannot match
+  # (same lesson as camila_lettering); explicit pairs for the slug shapes.
+  - from: 'TARRAFA_FLUX'
+    to: 'CLIENTE_C_FLUX'
+  - from: 'tarrafa_'
+    to: 'cliente-c_'
+  # TAROFFA is a typo variant of the brand in the 38.18 palette table; literal
+  # distinct token, redacted to the same Cliente C placeholder.
+  - from: 'TAROFFA'
+    to: 'CLIENTE C'
+  # -- studio product brand (LAGOSTIN FC Manager, catalog/workstation video product) --
+  # Distinct from the beatstep hardware-research slug (projeto-x) so a co-occurring
+  # mention cannot collide. Full brand phrase first, then title/sentence cases.
+  - from: '\bLAGOSTIN\b'
+    to: 'PRODUTO X'
+  - from: '\bLagostin\b'
+    to: 'Produto X'
+  - from: '\blagostin\b'
+    to: 'produto-x'
+  # -- owner Discord username (Kan Runbook board) -------------------------------------
+  - from: '\bgnnss777\b'
+    to: '<user>'
+  # -- hardware/research project slug ----------------------------------------------
+  - from: '\bBeatstep\b'
+    to: 'Projeto X'
+  - from: '\bbeatstep\b'
+    to: 'projeto-x'
+  # -- client production name (WAID project) -> Projeto X ---------------------------
+  - from: '\(Smoke Ninja Cat\)'
+    to: '(Projeto X)'
+  # -- owner project-repo paths (client slugs) -> %PROJECT_REPO%; longest first ------
+  # (fix wave) client repos live as C:\AI\<slug>; normalize to a neutral placeholder.
+  # MUST stay before any shorter overlapping pattern and never touch C:\AI\GNNSS_VAULT
+  # (the canonical vault path is redacted by its own dedicated pair below; the
+  # byte-identical check-links.ps1 copy keeps its original bytes because it is
+  # byte-copied and never template-ized).
+  - from: 'C:\\AI\\camilla-2026-catalog-preview'
+    to: '%PROJECT_REPO%'
+  - from: 'C:\\AI\\camilla-2026-docs-sync'
+    to: '%PROJECT_REPO%'
+  - from: 'C:\\AI\\camilla-2026'
+    to: '%PROJECT_REPO%'
+  - from: 'C:\\AI\\projeto-x-research'
+    to: '%PROJECT_REPO%'
+  - from: 'C:\\AI\\opencode\\erm_wan'
+    to: '%PROJECT_REPO%'
+  - from: 'C:\\AI\\cliente-b'
+    to: '%PROJECT_REPO%'
+  - from: 'C:\\AI\\waid'
+    to: '%PROJECT_REPO%'
+  # -- double-L spelling variant of the client A slug (same class as \bcamila-2026\b);
+  #    ordered AFTER the path pairs above so path occurrences are already gone ------
+  - from: '\bcamilla-2026\b'
+    to: 'cliente-a'
+  # -- owner drive root (2026-10-10) -------------------------------------------------
+  # 'E:/DRIVE' is this machine's asset drive: the letter plus the folder name are
+  # owner layout, and a fresh install has neither. The path-scan rules cover
+  # C:\Users\ but not a bare drive root, so it is redacted here. Both separators
+  # and both cases, longest form first.
+  - from: 'E:/DRIVE/My Drive'
+    to: '%DRIVE%/My Drive'
+  - from: 'E:\\DRIVE\\My Drive'
+    to: '%DRIVE%\\My Drive'
+  - from: 'E:/DRIVE'
+    to: '%DRIVE%'
+  - from: 'E:\\DRIVE'
+    to: '%DRIVE%'
+  # -- owner machine paths ----------------------------------------------------------
+  - from: 'C:\\Users\\gnnss'
+    to: '%USERPROFILE%'
+  - from: '\bOneDrive\b'
+    to: 'CloudFolder'
+  - from: '\bonedrive\b'
+    to: 'cloudfolder'
+  # -- owner vault path (Wave 3 path-scan, policy b) ----------------------------------
+  # Every shipped mention of the canonical vault path becomes the
+  # %OBSIDIAN_VAULT_PATH% placeholder (same pattern as audit-health.ps1 above).
+  # check-links.ps1 is unaffected: byte-copied, never template-ized.
+  - from: 'C:\\AI\\GNNSS_VAULT\b'
+    to: '%OBSIDIAN_VAULT_PATH%'
+  # -- username residue (Wave 3 path-scan, policy a) -----------------------------------
+  # Domain-qualified and bare lowercase username mentions become neutral
+  # placeholders. Case-sensitive on purpose: "GNNSS_VAULT" / "GNNSS Vault" are
+  # the vault product name and stay machine-neutral.
+  - from: 'GNNSS\\gnnss'
+    to: '<DOMAIN>\<user>'
+  - from: '\bgnnss\b'
+    to: '<user>'
+  # -- client-name backstop (2026-10-10; closes follow-up 2.7) -----------------------
+  # The client-name-leak rule (rules.yaml) reports these terms in ANY distributable
+  # file; these pairs are the redaction that satisfies it. Added AFTER the owner
+  # pairs so path/slug occurrences are already normalized (the '\bcamilla-2026\b'
+  # slug pair above runs first). Ordered longest-first within each name so the
+  # full name never leaves a half-redacted surname behind.
+  - from: '\bCamilla Gonda\b'
+    to: '<client>'
+  - from: '\bcamilla gonda\b'
+    to: '<client>'
+  - from: '\bCamila Gonda\b'
+    to: '<client>'
+  - from: '\bcamila gonda\b'
+    to: '<client>'
+  - from: '\bCamilla\b'
+    to: '<Client>'
+  - from: '\bcamilla\b'
+    to: '<client>'
+  - from: '\bCAMILLA\b'
+    to: '<CLIENT>'
+  - from: '\bCamila\b'
+    to: '<Client>'
+  - from: '\bcamila\b'
+    to: '<client>'
+  - from: '\bCAMILA\b'
+    to: '<CLIENT>'
+  - from: '\bGonda\b'
+    to: '<ClientSurname>'
+  - from: '\bgonda\b'
+    to: '<client-surname>'
+  - from: '\bGONDA\b'
+    to: '<CLIENTSURNAME>'
+  - from: '\bTarrafa Creative\b'
+    to: '<Studio>'
+  - from: '\bTarrafa\b'
+    to: '<Studio>'
+  - from: '\btarrafa\b'
+    to: '<studio>'
+  - from: '\bTARRAFA\b'
+    to: '<STUDIO>'
+  - from: '\bLagostin\b'
+    to: '<Client>'
+  - from: '\blagostin\b'
+    to: '<client>'
+  - from: '\bLAGOSTIN\b'
+    to: '<CLIENT>'
+  - from: '\bLeprevost\b'
+    to: '<Surname>'
+  - from: '\bleprevost\b'
+    to: '<surname>'
+  - from: '\bLEPREVOST\b'
+    to: '<SURNAME>'
+  # -- composite slugs (2026-10-10) --------------------------------------------------
+  # Joined tokens the \b pairs above cannot reach: the Instagram handle, the board
+  # domain, the GitHub org. Longest form first so the compound never leaves a
+  # half-redacted stub behind.
+  # 'EditCamilla01'-style: the name embedded mid-token between letters and digits.
+  # The underscore pairs above require an underscore adjacency; this shape has
+  # letters on both sides ('Edit' + '01'), so it needs its own pair. Placed BEFORE
+  # the compound pairs so a longer compound still wins.
+  - from: 'Camilla0'
+    to: '<Client>0'
+  - from: 'Camilla1'
+    to: '<Client>1'
+  - from: 'Camilla2'
+    to: '<Client>2'
+  - from: 'camilla0'
+    to: '<client>0'
+  - from: 'camilla1'
+    to: '<client>1'
+  - from: 'camilla2'
+    to: '<client>2'
+  - from: 'camillagonda'
+    to: '<client>'
+  - from: 'CamillaGonda'
+    to: '<Client>'
+  - from: 'CAMILLAGONDA'
+    to: '<CLIENT>'
+  - from: 'camillakan'
+    to: '<client>kan'
+  - from: 'CamillaKan'
+    to: '<Client>Kan'
+  - from: 'CAMILLAKAN'
+    to: '<CLIENT>KAN'
+  - from: 'lagostinhub'
+    to: '<client>hub'
+  - from: 'LagostinHub'
+    to: '<Client>Hub'
+  - from: 'LAGOSTINHUB'
+    to: '<CLIENT>HUB'
+  # Whisper mis-transcription of the client name (Lessons Learned); the real name is
+  # already redacted, this keeps the lesson readable without the near-miss string.
+  - from: 'Camilo Agonda'
+    to: '<Client>'
+  # Surname-first board filename.
+  - from: 'Brutos Camila'
+    to: 'Brutos <Client>'
+  # -- underscore-joined slug forms (measured 2026-10-10) ----------------------------
+  # A word boundary never fires inside an underscore-joined token, so the pairs
+  # above MISS '1309_QUEM-E_CAMILLA_DARK_v01a.mp4', 'REFERENCIA_CAMILLA.jpg' and
+  # '<Client> Gonda_2-2.mov' - the same lesson already documented for
+  # camila_lettering / tarrafa_. These pairs close every underscore-adjacent shape
+  # for each client name, in all three cases, ordered longest-first.
+  - from: '_CAMILLA_'
+    to: '_<CLIENT>_'
+  - from: '_CAMILLA'
+    to: '_<CLIENT>'
+  - from: 'CAMILLA_'
+    to: '<CLIENT>_'
+  - from: '_Camilla_'
+    to: '_<Client>_'
+  - from: '_Camilla'
+    to: '_<Client>'
+  - from: 'Camilla_'
+    to: '<Client>_'
+  - from: '_camilla_'
+    to: '_<client>_'
+  - from: '_camilla'
+    to: '_<client>'
+  - from: 'camilla_'
+    to: '<client>_'
+  - from: '_CAMILA_'
+    to: '_<CLIENT>_'
+  - from: '_CAMILA'
+    to: '_<CLIENT>'
+  - from: 'CAMILA_'
+    to: '<CLIENT>_'
+  - from: '_Camila_'
+    to: '_<Client>_'
+  - from: '_Camila'
+    to: '_<Client>'
+  - from: 'Camila_'
+    to: '<Client>_'
+  - from: '_camila_'
+    to: '_<client>_'
+  - from: '_camila'
+    to: '_<client>'
+  - from: 'camila_'
+    to: '<client>_'
+  - from: '_GONDA_'
+    to: '_<CLIENTSURNAME>_'
+  - from: '_GONDA'
+    to: '_<CLIENTSURNAME>'
+  - from: 'GONDA_'
+    to: '<CLIENTSURNAME>_'
+  - from: '_Gonda_'
+    to: '_<ClientSurname>_'
+  - from: '_Gonda'
+    to: '_<ClientSurname>'
+  - from: 'Gonda_'
+    to: '<ClientSurname>_'
+  - from: '_gonda_'
+    to: '_<client-surname>_'
+  - from: '_gonda'
+    to: '_<client-surname>'
+  - from: 'gonda_'
+    to: '<client-surname>_'
+  - from: '_TARRAFA_'
+    to: '_<STUDIO>_'
+  - from: '_TARRAFA'
+    to: '_<STUDIO>'
+  - from: 'TARRAFA_'
+    to: '<STUDIO>_'
+  - from: '_Tarrafa_'
+    to: '_<Studio>_'
+  - from: '_Tarrafa'
+    to: '_<Studio>'
+  - from: 'Tarrafa_'
+    to: '<Studio>_'
+  - from: '_tarrafa_'
+    to: '_<studio>_'
+  - from: '_tarrafa'
+    to: '_<studio>'
+  - from: 'tarrafa_'
+    to: '<studio>_'
+  # -- generic user-directory illustration -> the documented placeholder ------------
+  # 'C:\Users\<user>\.triton' in an OSS research note documents a path the reader
+  # will have on THEIR machine; the owner-drive-path rule fires on the literal
+  # 'C:\Users\' prefix regardless of what follows. Normalize to the placeholder
+  # the rest of the repo uses, keeping the note readable.
+  - from: 'C:\\Users\\<user>'
+    to: '%USERPROFILE%'
+  # -- diary wording -> neutral journal/registro wording ----------------------------
+  - from: '\bDiário de Sessão\b'
+    to: 'Registro de Sessão'
+  - from: '\bDiário de sessão\b'
+    to: 'Registro de sessão'
+  - from: '\bDiários\b'
+    to: 'Registros'
+  - from: '\bdiários\b'
+    to: 'registros'
+  - from: '\bDiário\b'
+    to: 'Registro'
+  - from: '\bdiário\b'
+    to: 'registro'
+  - from: '\bDiario\b'
+    to: 'Registro'
+  - from: '\bdiario\b'
+    to: 'registro'
+  - from: '\bDIÁRIO\b'
+    to: 'REGISTRO'
+  - from: '\bDIARIO\b'
+    to: 'REGISTRO'
+
+files:
+  # ------------------------------------------------------------ root MOC
+  - path: 'Mapa.md'
+    note: 'Zone link rewrites into excluded zones are derived from zone-map.yaml at build time (structural). Legend example redacted by shared client pairs.'
+    drop:
+    replace:
+
+  # ------------------------------------------------------------ knowledge mapas
+  - path: '30-conhecimento/30.00-conhecimento-mapa.md'
+    note: 'Drop links into excluded content (client MOCs, security audit with key material, client creative IP notes removed from the 32 whitelist in the fix wave); link the orphaned 31.05 design note.'
+    drop:
+      - '[[32.08-camila-2026-moc]]'
+      - '[[32.15-waid-moc]]'
+      - '[[32.14-ney-leprevost-moc]]'
+      - '[[36.01-auditoria-curseduca]]'
+      - '[[32.01-cine-studio-dashboard-render]]'
+    replace:
+      - from: '- \[\[31\.02-dicas-e-truques\]\]'
+        to: '- [[31.02-dicas-e-truques]]\n- [[31.05-design]]'
+
+  - path: '50-sistema/50.00-sistema-mapa.md'
+    note: 'Drop links to excluded 52-agent-config files; rewire boards section to the shipped generic boards; add the 52.13 configs mapa link (otherwise orphaned).'
+    drop:
+      - '[[52.11-skills-mapa]]'
+      - '[[Brain Review 2026-08-31]]'
+      - '[[Brain Review 2026-08-27]]'
+      - '[[52.12-skills-research-2026-08-31]]'
+      - 'Boards por projeto:'
+    replace:
+      - from: '- \[\[Agent Identity\]\] \| \[\[Framework Sync\]\]'
+        to: '- [[Agent Identity]] | [[Framework Sync]] | [[52.13-agent-configs-mapa]]'
+      - from: '- \[\[projects\.base\]\] — base viva de projetos'
+        to: '- [[projects.base]] — base viva de projetos\n- Boards genéricos: [[Second Brain Kanban]] · [[Project Board]] · [[Kanban Template]]'
+
+  # ------------------------------------------------------------ 31-ia-e-agentes
+  - path: '30-conhecimento/31-ia-e-agentes/31.01-decisoes-tecnicas.md'
+    note: 'Drop links into excluded zones (waid client note, camila survey-manager decision notes); shared pairs fix owner paths, client mentions, diary wording.'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[21.02-camila-survey-manager]]'
+    replace: []
+
+  - path: '30-conhecimento/31-ia-e-agentes/31.02-dicas-e-truques.md'
+    note: 'Drop client-zone link; shared pairs fix owner paths in command examples.'
+    drop:
+      - '[[13.08-waid]]'
+    replace: []
+
+  - path: '30-conhecimento/31-ia-e-agentes/31.03-obsidian-espelho-bidirecional.md'
+    note: 'Drop link into excluded projects zone.'
+    drop:
+      - '[[22.01-hermes-skills-organization]]'
+    replace: []
+
+  - path: '30-conhecimento/31-ia-e-agentes/31.04-omh-lessons.md'
+    note: 'Added by Wave 3 path scan (policy a): no own ops; shared pairs fix the lowercase username mention.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/31-ia-e-agentes/31.07-comfyui-setup.md'
+    note: 'Drop links into excluded zones.'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[27.02-asset-forge]]'
+      - '[[27.05-promptforge]]'
+      - '[[23.01-cineweave]]'
+    replace: []
+
+  - path: '30-conhecimento/31-ia-e-agentes/31.08-comfyui-setup-local.md'
+    note: 'Drop links into excluded zones / excluded agent-config notes.'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[23.01-cineweave]]'
+      - '[[52.11-skills-mapa]]'
+    replace: []
+
+  # ------------------------------------------------------------ 32-video-remotion survivors
+  - path: '30-conhecimento/32-video-remotion/32.10-erm-moc.md'
+    note: 'Drop links to non-shipping targets (client Context Pack, excluded board, diary note, client-zone ERM notes, projects-zone note).'
+    drop:
+      - ' - Context Pack]]'
+      - '[[ERM Kanban]]'
+      - '[[2026-08-15]]'
+      - '[[12.08-erm]]'
+      - '[[12.09-erm-pipeline-tecnico]]'
+      - '[[12.02-erm-design-dna]]'
+      - '[[12.03-erm-motion]]'
+      - '[[12.06-equipe-erm]]'
+      - '[[22.01-hermes-skills-organization]]'
+      - '[[12.07-locutores-erm]]'
+      - '[[12.01-erm-readme]]'
+      - '[[32.01-camila-gonda-remotion-sync]]'
+      - '[[32.02-camila-gonda-templates-remotion]]'
+      - '[[32.03-camila-lettering-manual]]'
+      - '[[32.04-camila-master-register]]'
+      - '[[32.05-camila-production-kit]]'
+      - '[[32.06-camila-style-guide]]'
+      - '[[32.07-camila-lettering-remotion]]'
+      - '[[32.08-camila-2026-moc]]'
+      - '[[32.13-ffmpeg]]'
+      - '[[32.14-ney-leprevost-moc]]'
+      - '[[32.15-waid-moc]]'
+      - '[[32.18-yt-dlp]]'
+      - '[[32.02-cine-studio-dashboard-render-v2]]'
+      - '[[32.11-erm-estilo-musical-aprovado]]'
+      - '[[32.12-erm-estudos-de-risco-brumadinho]]'
+      - '[[32.17-wan-2-2-i2v-erm]]'
+    replace: []
+
+  - path: '30-conhecimento/32-video-remotion/32.16-wod-moc.md'
+    note: 'Drop links to non-shipping targets (client Context Pack, personal training note, client MOCs, excluded 52.06-wod brief).'
+    drop:
+      - ' - Context Pack]]'
+      - '[[43.02-back-training]]'
+      - '[[52.06-wod]]'
+      - '[[32.01-camila-gonda-remotion-sync]]'
+      - '[[32.02-camila-gonda-templates-remotion]]'
+      - '[[32.03-camila-lettering-manual]]'
+      - '[[32.04-camila-master-register]]'
+      - '[[32.05-camila-production-kit]]'
+      - '[[32.06-camila-style-guide]]'
+      - '[[32.07-camila-lettering-remotion]]'
+      - '[[32.08-camila-2026-moc]]'
+      - '[[32.13-ffmpeg]]'
+      - '[[32.14-ney-leprevost-moc]]'
+      - '[[32.15-waid-moc]]'
+      - '[[32.18-yt-dlp]]'
+      - '[[32.02-cine-studio-dashboard-render-v2]]'
+      - '[[32.11-erm-estilo-musical-aprovado]]'
+      - '[[32.12-erm-estudos-de-risco-brumadinho]]'
+      - '[[32.17-wan-2-2-i2v-erm]]'
+    replace: []
+
+  - path: '30-conhecimento/32-video-remotion/32.21-workflow-cinematic-ref-upscale-2k.md'
+    note: 'Drop links to non-shipping targets (client-zone notes).'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[23.01-cineweave]]'
+      - '[[32.01-camila-gonda-remotion-sync]]'
+      - '[[32.02-camila-gonda-templates-remotion]]'
+      - '[[32.03-camila-lettering-manual]]'
+      - '[[32.04-camila-master-register]]'
+      - '[[32.05-camila-production-kit]]'
+      - '[[32.06-camila-style-guide]]'
+      - '[[32.07-camila-lettering-remotion]]'
+      - '[[32.08-camila-2026-moc]]'
+      - '[[32.13-ffmpeg]]'
+      - '[[32.14-ney-leprevost-moc]]'
+      - '[[32.15-waid-moc]]'
+      - '[[32.18-yt-dlp]]'
+      - '[[32.02-cine-studio-dashboard-render-v2]]'
+      - '[[32.11-erm-estilo-musical-aprovado]]'
+      - '[[32.12-erm-estudos-de-risco-brumadinho]]'
+      - '[[32.17-wan-2-2-i2v-erm]]'
+    replace: []
+
+  # ------------------------------------------------------------ 34/35/37 knowledge notes
+  - path: '30-conhecimento/34-infraestrutura/34.01-infraestrutura.md'
+    note: 'Drop the repo Context Pack index (targets are machine-local repos, not vault notes); shared pairs fix the beatstep slug.'
+    drop:
+      - ' - Context Pack]]'
+    replace: []
+
+  - path: '30-conhecimento/35-second-brain/35.01-second-brain.md'
+    note: 'Drop link into excluded capture zone; unlink the excluded Second Brain Rollout session log (fix wave).'
+    drop:
+      - '[[00.01-portfolio-por-cliente]]'
+      - '[[Second Brain Rollout]]'
+    replace: []
+
+  - path: '30-conhecimento/35-second-brain/35.03-transversal-moc.md'
+    note: 'Wiki index hub: drop every link whose target does not ship (excluded zones, excluded files, fix-wave exclusions 52.09/32.20). Keeps templates + shipped knowledge notes linked (orphan prevention).'
+    drop:
+      - '[[2026-08-21-'
+      - '[[25.02-revisao'
+      - '[[25.01-plano'
+      - '[[00.02-ney]]'
+      - '[[2026-08-07]]'
+      - '[[36.01-auditoria-curseduca]]'
+      - '[[27.01-after-effects-mcp]]'
+      - '[[27.02-asset-forge]]'
+      - '[[43.02-back-training]]'
+      - '[[Daily Notes]]'
+      - '[[Diario de Sessao]]'
+      - '[[14.01-ney-leprevost]]'
+      - '[[14.02-ney-leprevost-video-acervo]]'
+      - '[[27.03-openmontage]]'
+      - '[[27.04-projeto-estudio]]'
+      - '[[27.05-promptforge]]'
+      - '[[TEMPLATE - Decisao]]'
+      - '[[00.01-portfolio-por-cliente]]'
+      - '[[24.01-catalog'
+      - '[[24.02-catalog'
+      - '[[24.03-catalog'
+      - '[[24.04-catalog'
+      - '[[24.05-catalog'
+      - '[[24.06-catalog'
+      - '[[24.07-catalog'
+      - '[[52.09-discord-mapa-canais]]'
+      - '[[32.20-smoke-ninja-cat]]'
+    replace: []
+
+  - path: '30-conhecimento/35-second-brain/35.04-ideias-criativas.md'
+    note: 'Drop links into excluded zones; shared pairs fix diary wording; "sem intermediarios" reworded to the feminine form (the masculine word contains the blocklist substring di-a-rio).'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[23.01-cineweave]]'
+    replace:
+      - from: 'sem intermediários'
+        to: 'sem etapa intermediária'
+
+  # NOTE: the vault reorganized the 37-regras-e-decisoes zone (commit 2026-09-17,
+  # "regras de produção reorganizadas e integradas"): the old 37.01-regras-de-agentes,
+  # 37.04-decisoes-seguranca-dados and 37.05-convencoes-tags were archived
+  # (30-conhecimento/37-regras-e-decisoes/_archive) and replaced by a new sequence
+  # 37.01-37.09 (edicao/animacao/cinema/roteiro/design/producao/mapa/evidencia/skills-baseline).
+  # The new notes are client-free (verified 2026-09-20); the archive ships excluded
+  # via zone-map.yaml.
+
+  # ------------------------------------------------------------ 52-agent-config
+  - path: '50-sistema/52-agent-config/52.13-agent-configs-mapa.md'
+    note: 'Unlink the excluded Configs notes / skills mapa / forge project note (plain-text mentions keep the census value); shared pairs fix owner paths and stale OneDrive pointer.'
+    drop:
+    replace:
+      - from: '\[\[Config - hermes config\.yaml(\|[^\]]*)?\]\]'
+        to: 'config.yaml'
+      - from: '\[\[Config - hermes dotenv e auth(\|[^\]]*)?\]\]'
+        to: 'auth.json'
+      - from: '\[\[Config - hermes SOUL(\|[^\]]*)?\]\]'
+        to: 'SOUL.md'
+      - from: '\[\[Config - opencode\.json(\|[^\]]*)?\]\]'
+        to: 'opencode.json'
+      - from: '\[\[Config - opencode skills-lock\.json(\|[^\]]*)?\]\]'
+        to: 'skills-lock.json'
+      - from: '\[\[Config - opencode OBSIDIAN_VAULT pointer(\|[^\]]*)?\]\]'
+        to: 'OBSIDIAN_VAULT.md'
+      - from: '\[\[Config - obsidian app\.json(\|[^\]]*)?\]\]'
+        to: 'app.json'
+      - from: '\[\[Config - obsidian plugins(\|[^\]]*)?\]\]'
+        to: 'community-plugins.json'
+      - from: '\[\[Config - obsidian types appearance graph(\|[^\]]*)?\]\]'
+        to: 'types.json'
+      - from: '\[\[52\.11-skills-mapa\]\]'
+        to: '52.11-skills-mapa'
+      - from: '\[\[hermes-brain-forge\]\]'
+        to: 'hermes-brain-forge'
+
+  - path: '50-sistema/52-agent-config/52.01-hermes-agent.md'
+    note: 'Shared pairs only: owner path + OneDrive pointer, client project table rows.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.02-hermes-win-native.md'
+    note: 'Shared pairs only: owner paths in setup commands.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.03-hermes-workspace.md'
+    note: 'Shared pairs only: owner paths.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.04-reaper-mcp.md'
+    note: 'Drop links into excluded zones.'
+    drop:
+      - '[[27.01-after-effects-mcp]]'
+      - '[[27.04-projeto-estudio]]'
+      - '[[13.08-waid]]'
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.05-skills-sh.md'
+    note: 'Shared pairs only: owner path.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.07-workflows.md'
+    note: 'Drop links into excluded projects/client zones.'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[27.02-asset-forge]]'
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.08-modelos-loras.md'
+    note: 'Drop links into excluded client/projects zones.'
+    drop:
+      - '[[13.08-waid]]'
+      - '[[27.02-asset-forge]]'
+    replace: []
+
+  # 52.06-wod.md + 52.09-discord-mapa-canais.md: excluded since the fix wave
+  # (zone-map 52-agent-config gate), so their former ops entries are REMOVED -
+  # a listed ops file missing from the output now fails the build (typo guard).
+
+  - path: '50-sistema/52-agent-config/Agent Playbook.md'
+    note: 'Unlink the excluded Second Brain Rollout note (fix wave); shared pairs fix owner paths.'
+    drop:
+      - '[[agent-config/Second Brain Rollout]]'
+    replace: []
+
+  - path: '50-sistema/52-agent-config/Hermes-Global-Skills-SDD-2026-08-20.md'
+    note: 'Unlink the excluded skills mapa (plain-text mention keeps the sentence).'
+    drop:
+    replace:
+      - from: '\[\[52\.11-skills-mapa\]\]'
+        to: '52.11-skills-mapa'
+
+  - path: '50-sistema/52-agent-config/Agent Identity.md'
+    note: 'Shared pairs only: owner paths.'
+    drop:
+    replace: []
+
+  # ------------------------------------------------------------ 53-templates
+  - path: '50-sistema/53-templates/Daily Note Template.md'
+    note: 'Unlink the excluded Second Brain Rollout note (fix wave: dated session log with machine paths).'
+    drop:
+      - '[[agent-config/Second Brain Rollout]]'
+    replace: []
+
+  - path: '50-sistema/53-templates/Resource Template.md'
+    note: 'Unlink the excluded Second Brain Rollout note (fix wave: dated session log with machine paths).'
+    drop:
+      - '[[agent-config/Second Brain Rollout]]'
+    replace: []
+
+  # ------------------------------------------------------------ 54-scripts
+  - path: '50-sistema/54-scripts/reorg/audit-health.ps1'
+    note: 'Shipped copy only: hardcoded owner vault path becomes a neutral placeholder (fix wave). check-links.ps1 is deliberately NOT listed here - it must stay byte-identical to the vault original (task 3.4 single-source rule), which is also why the vault path is never a shared pair.'
+    drop:
+    replace:
+      - from: 'C:\\AI\\GNNSS_VAULT'
+        to: '%OBSIDIAN_VAULT_PATH%'
+
+  # ------------------------------------------------------------ conventions
+  - path: '50-sistema/55-convencoes/AGENTS.md'
+    note: 'Shared pairs only: client project slugs in the project list, example MOC path, diary wording.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/55-convencoes/OpenSpec Workflow.md'
+    note: 'Client example ticket line becomes generic; shared pairs fix client repo paths.'
+    drop:
+    replace:
+      - from: 'camila-lettering-remotion-redesign'
+        to: 'tarefa-exemplo'
+      - from: 'ver \[\[32\.08-camila-2026-moc\]\]'
+        to: 'ver o MOC do projeto'
+
+  - path: '50-sistema/55-convencoes/Kanban Workflow.md'
+    note: 'Example card in the column snippet becomes generic (em dash copied verbatim from the source line).'
+    drop:
+    replace:
+      - from: 'do camila-2026 — ver \[\[32\.08-camila-2026-moc\]\]'
+        to: 'do projeto — ver o MOC do projeto'
+
+  - path: '50-sistema/55-convencoes/Metodo de Trabalho.md'
+    note: 'Drop the tarrafa Context Pack link (that pack is now excluded); replace the dated-changelog path reference into the excluded 20-projetos zone so the zone token does not leak; shared pairs fix the lagostin product brand + owner username.'
+    drop:
+      - '[[tarrafa - Context Pack]]'
+    replace:
+      - from: '20-projetos/24-catalog/'
+        to: 'projetos/24-catalog/'
+
+  - path: '50-sistema/55-convencoes/GNNSS Vault - Operating Rules.md'
+    note: 'Navigation line: unlink client-zone notes (keep the line); zone tokens in the folder map are structural and allowlisted in rules.yaml.'
+    drop:
+    replace:
+      - from: ' · \[\[13\.08-waid\]\]'
+        to: ''
+      - from: ' · \[\[23\.01-cineweave\]\]'
+        to: ''
+
+  # ------------------------------------------------------------ 30-conhecimento REDACT (full gate pass)
+  - path: '30-conhecimento/30.00-mcp-servers.md'
+    note: 'Shared pairs only: owner drive paths in MCP connection notes.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/30.01-mcp-troubleshooting.md'
+    note: 'Shared pairs only: owner drive paths in troubleshooting examples.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/34-infraestrutura/34.02-workstation-gnsss.md'
+    note: 'Shared pairs only: onedrive/owner paths in workstation spec.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/35-second-brain/35.06-skills-bank-manifest.md'
+    note: 'Shared pairs only: owner drive paths in skills bank manifest.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/38-web-dev/38.18-site-builder-skill.md'
+    note: 'Shared pairs only: client (camila) mentions in site builder skill.'
+    drop:
+    replace: []
+
+  # -- tarrafa redaction wave (2026-09-21): verbatim-shipped files carrying the
+  # film brand; added to the files list so shared_replace applies. --------------
+  - path: '50-sistema/52-agent-config/oss-storyboard-video-tools.md'
+    note: 'Shared pairs only: film brand (tarrafa) in frontmatter tags.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/storyboard-ref-studio-windows-status.md'
+    note: 'Shared pairs only: film brand (tarrafa) mention in tool status.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/wasserman-filmmaker-suite-reference.md'
+    note: 'Shared pairs only: film brand (tarrafa) in frontmatter tags.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/Agent Playbook/Lessons Learned/ComfyUI_Workflow_Templates.md'
+    note: 'Shared pairs only: TARRAFA_FLUX workflow filename in ComfyUI path.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/55-convencoes/No-PDFs-on-Vercel.md'
+    note: 'Shared pairs only: film brand (tarrafa) mention in convention note.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/57-conhecimento/57.25-design-moc.md'
+    note: 'Shared pairs only: film brand (tarrafa) in palette table.'
+    drop:
+    replace: []
+
+  # -- film methodology files moved to 08-filmes (zone-map gate pass 2026-09-21);
+  # added so shared_replace redacts the tarrafa brand. ---------------------------
+  - path: '08-filmes/35.02-DECUPAGEM-CINEMATOGRAFICA.md'
+    note: 'Shared pairs only: film brand (tarrafa) in title and prose.'
+    drop:
+    replace: []
+
+  - path: '08-filmes/35.03-PROMPT-ENGINEERING.md'
+    note: 'Shared pairs only: film brand (tarrafa) in title.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/38-web-dev/38.23-taroth-openspec.md'
+    note: 'Shared pairs only: owner GitHub handle (gnnss777) in repo URL; new file picked up by the 2026-09-21 rebuild.'
+    drop:
+    replace: []
+
+  - path: '30-conhecimento/38-web-dev/38.21-taroth-landing.md'
+    note: 'Shared pairs only: client (camila) mentions in taroth landing note.'
+    drop:
+    replace: []
+
+  # ------------------------------------------------------------ 50-sistema REDACT (full gate pass)
+  - path: '50-sistema/50.01-motion-overlays-remotion.md'
+    note: 'Shared pairs only: client (camila/gonda) mentions in motion overlays.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/50.03-motion-spec-global.md'
+    note: 'Shared pairs only: client (camila/gonda) mentions in motion spec.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.22-brain-unificado.md'
+    note: 'Shared pairs only: client slug (camila-2026) and owner vault path redacted at build; zone tree tokens are structural and the file is allowlisted in the gate (see rules.yaml).'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.23-openviking-instalacao.md'
+    note: 'Shared pairs only: owner drive paths in OpenViking install notes.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/52.24-openviking-operacao.md'
+    note: 'Per-file pair FIRST neutralizes the diary wording in the 52.24 sync-config table (a "(diário)" sync-label meaning daily; the shared diary->registro pair would otherwise corrupt it); shared pairs fix the owner drive path.'
+    drop:
+    replace:
+      - from: '(diário)'
+        to: '(diariamente)'
+  - path: '50-sistema/52-agent-config/52.25-obsidian-kb-operacao.md'
+    note: 'Shared pairs only: owner drive paths in obsidian-kb operations notes.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/Agent Playbook/Lessons Learned.md'
+    note: 'Shared pairs only: client (gonda) mentions in lessons learned.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/52-agent-config/nomi-reference.md'
+    note: 'Shared pairs only: owner drive paths in nomi reference.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/54-scripts/mirror-skills.ps1'
+    note: 'Shared pairs only: owner drive paths in mirror-skills script.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/55-convencoes/Kan Runbook.md'
+    note: 'Shared pairs only: client (camila/gonda), product brand (lagostin), owner username (gnnss777) and owner drive paths in the kan runbook.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/55-convencoes/Mirror Convention.md'
+    note: 'Shared pairs only: client (camila) mentions in the mirror convention.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/55-convencoes/SOP Player Drive no Card.md'
+    note: 'Shared pairs only: client (camila) mentions in the player-drive SOP.'
+    drop:
+    replace: []
+
+  - path: '50-sistema/57-conhecimento/57.26-audio-dominio/57.10-casos-estudo.md'
+    note: 'Per-file pair FIRST neutralizes the script-title diary wording before the shared diary->registro pair runs; the interplay of the zone-diary rule with a case title is handled here.'
+    drop:
+    replace:
+      - from: 'Processo diário'
+        to: 'Processo contínuo'
+
+  - path: '50-sistema/57-openmontage-tasteforge-integracao.md'
+    note: 'Shared pairs only: client (camila) mentions in the tasteforge integration note.'
+    drop:
+    replace: []
+
+  # ------------------------------------------------------------ 55-convencoes closing entries
+
+  - path: '50-sistema/55-convencoes/Tag Taxonomy.md'
+    note: 'Legacy-tag table + domain-tag/typo examples redacted to generic example tags (fix wave: the political-campaign tag set leaked the nature of a real campaign); shared pairs redact client tag examples; zone-token hub paths are structural and allowlisted in rules.yaml.'
+    drop:
+    replace:
+      # legacy mapping row -> generic example tags (runs BEFORE shared pairs so the
+      # raw camila/camila-gonda cell is replaced wholesale, not mangled per word)
+      - from: 'camila-gonda, camila, candidato, politico, parana, intel, intel-eleitoral, roteiro, survey, combate-ao-feminicidio, combatividade'
+        to: 'cliente-a, projeto-x, campanha-y, roteiro, survey'
+      - from: '`brumadinho` · `diaria1`'
+        to: '`campanha-y` · `registro1`'
+      - from: 'daily, diaria1'
+        to: 'daily, registro1'
+      - from: '`politique`→`politico`'
+        to: '`exemplo-a`→`exemplo-b`'

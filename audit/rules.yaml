@@ -1,0 +1,389 @@
+# rules.yaml — sanitization rules as DATA (task 2.3). Consumed by BOTH runners:
+#   audit/scan-personal-data.ps1  (Windows PowerShell 5.1, .NET regex)
+#   audit/scan-personal-data.sh   (bash 3.2 / POSIX ERE)
+# Rules are declared here; runners contain only I/O + matching. No rule logic in code.
+#
+# YAML subset (both parsers implement exactly this — keep it simple):
+#   - full-line comments, 2-space indented lists/maps, single-quoted scalar values
+#   - top-level keys: file_globs, personal_terms_file, personal_terms_scope,
+#     rules, exemptions, allowlist
+#   - a rule item has fields: id, pattern, ci, severity, message, scope (one line each)
+#
+# PER-RULE PATH SCOPING (forge-hardening task 1.1):
+#   scope: optional comma-separated path globs (relative to the scan TARGET, same
+#   matcher as the allowlist: exact path or "dir/**"). When present, the rule is
+#   ACTIVE only on paths matching at least one glob; when absent, the rule is
+#   active everywhere. personal_terms_scope applies the same idea to every
+#   personal-term rule generated from personal-terms.yaml.
+#   Dual-form entries follow the established allowlist convention: two scan
+#   contexts need both path shapes (paths are relative to the scan TARGET):
+#     'vault-template/...' -> gate run against the REPO ROOT (pre-commit,
+#                             forge-refresh, forge gate)
+#     '<zone>/...' bare    -> gate run directly against the skeleton (-Target vault-template)
+#     'audit/fixtures/**'  -> fixture proofs (repo-relative paths via --paths-file)
+#
+# PATTERN PORTABILITY CONTRACT (do not break):
+#   - POSIX ERE compatible (grep -E) AND .NET compatible
+#   - use [[:space:]] for whitespace (the PS runner translates it to \s; POSIX ERE
+#     bracket expressions do NOT honor \t/\s escapes)
+#   - use \\ for a literal backslash; no \d/\w/\b
+#   - per-rule ci flag controls case-insensitivity (default true)
+#
+# file_globs: only simple "*.ext" globs are supported (extension filter).
+file_globs: '*.md,*.yaml,*.yml,*.json,*.ps1,*.sh,*.txt'
+personal_terms_file: 'personal-terms.yaml'
+# forge-hardening 1.3: personal terms are scoped to the vault skeleton + fixture
+# proofs (same value/rationale as the scope: field on the zone rules above). The
+# vendored skill trees legitimately carry names/diary wording in operational docs;
+# the skills defense is the secret-shape rules, which stay active everywhere.
+personal_terms_scope: 'vault-template/**,audit/fixtures/**,00-captura/**,08-filmes/**,10-clientes/**,20-projetos/**,28-books/**,28-filmes/**,30-conhecimento/**,30-sistema/**,40-pessoal/**,40-projetos/**,50-conhecimento/**,50-sistema/**,60-agent-knowledge/**,90-arquivo/**,MOCs/**,TaskNotes/**,scratch/**,.obsidian/**,Mapa.md'
+
+rules:
+  # ---- (a) secret shapes -----------------------------------------------------
+  # NOTE: secret shapes below carry a leading boundary ((^|[^A-Za-z0-9])) so that
+  # ordinary words like "task-reviewer-prompt" (contains sk-) do NOT trip the gate.
+  - id: secret-openai-style-key
+    pattern: '(^|[^A-Za-z0-9])sk-[A-Za-z0-9-]{10,}'
+    ci: false
+    severity: critical
+    message: 'Possible OpenAI-style secret key (sk-...)'
+
+  - id: secret-aws-access-key
+    pattern: '(^|[^A-Za-z0-9])AKIA[0-9A-Z]{16}'
+    ci: false
+    severity: critical
+    message: 'Possible AWS access key id (AKIA...)'
+
+  - id: secret-github-pat-classic
+    pattern: 'ghp_[A-Za-z0-9]{20,}'
+    ci: false
+    severity: critical
+    message: 'Possible GitHub personal access token (ghp_...)'
+
+  - id: secret-github-pat-finegrained
+    pattern: 'github_pat_'
+    ci: false
+    severity: critical
+    message: 'Possible GitHub fine-grained personal access token (github_pat_...)'
+
+  - id: secret-slack-token
+    pattern: 'xox[baprs]-'
+    ci: false
+    severity: critical
+    message: 'Possible Slack token (xox...-...)'
+
+  - id: secret-private-key-block
+    pattern: 'BEGIN (RSA |OPENSSH )?PRIVATE KEY'
+    ci: false
+    severity: critical
+    message: 'Private key material embedded in a text file'
+
+  - id: secret-inline-api-key
+    pattern: 'api[_-]?key["'']?[[:space:]]*[:=][[:space:]]*["'']?[^"'']{8,}'
+    ci: true
+    severity: critical
+    message: 'Inline API key assignment (api[_-]?key: ...). Config keys must be placeholders, never values.'
+
+  - id: secret-bearer-token
+    pattern: 'bearer[^[:space:]]{0,12}[[:space:]]*[:=][[:space:]]*["'']?[A-Za-z0-9._~+/=-]{16,}|bearer[[:space:]]+[A-Za-z0-9._~+/=-]{16,}'
+    ci: true
+    severity: critical
+    message: 'Bearer token value in a header or assignment'
+
+  # ---- (c) diary / personal-zone path patterns --------------------------------
+  - id: zone-path-excluded
+    pattern: '(00-captura|00-inbox|10-clientes|20-projetos|40-pessoal|90-arquivo)[/\\]'
+    ci: false
+    severity: high
+    message: 'Path-style reference into an excluded (personal/client) vault zone'
+    # forge-hardening 1.3: this rule (and the other personal/zone rules) exist to
+    # protect VAULT content. Vendored skills legitimately name zones/diary wording
+    # in operational prose (measured 249 personal/zone hits across skills/), so the
+    # rule is scoped to the vault skeleton + fixture-proof paths; secret shapes
+    # stay active on ALL skills paths.
+    scope: 'vault-template/**,audit/fixtures/**,00-captura/**,08-filmes/**,10-clientes/**,20-projetos/**,28-books/**,28-filmes/**,30-conhecimento/**,30-sistema/**,40-pessoal/**,40-projetos/**,50-conhecimento/**,50-sistema/**,60-agent-knowledge/**,90-arquivo/**,MOCs/**,TaskNotes/**,scratch/**,.obsidian/**,Mapa.md'
+
+  - id: zone-diary-filename
+    pattern: '(Di[aá]rio[[:space:]]+de[[:space:]]+Sess[aã]o|41-diarios)'
+    ci: true
+    severity: high
+    message: 'Diary/journal note reference (personal zone content)'
+    scope: 'vault-template/**,audit/fixtures/**,00-captura/**,08-filmes/**,10-clientes/**,20-projetos/**,28-books/**,28-filmes/**,30-conhecimento/**,30-sistema/**,40-pessoal/**,40-projetos/**,50-conhecimento/**,50-sistema/**,60-agent-knowledge/**,90-arquivo/**,MOCs/**,TaskNotes/**,scratch/**,.obsidian/**,Mapa.md'
+    # note (2026-10-10, narrowed): the rule used to match the COMMON NOUN
+    # (diário|diary) with word boundaries. Measured over the live vault that fired
+    # 115 hits, and inspection showed the majority were NOT personal-zone
+    # references: "magical diary" / "diário mágico" is the occult literature's
+    # technical term (Liber Null, Book of Pleasure - a subject-matter term);
+    # "processo diário" / "pg_cron diário" use the Portuguese ADVERB (= daily, a
+    # cadence); "implementation diary" / "session diary" are English engineering
+    # idiom describing a workflow genre. None of those are a pointer to a note.
+    # The rule now matches the ARTEFACT itself - the owner's journal note title
+    # (Diário de Sessão) and its zone path (40-pessoal/41-diarios/) - which is what
+    # the rule exists to protect. A bare diary reference in another language or a
+    # generic prose use is not a personal-zone reference and must not block a
+    # distribution build. The 40-pessoal/ path form is independently covered by
+    # zone-path-excluded. Fixture updated to the artefact form so the rule stays
+    # proven (audit/fixtures/leak-personal-terms.md).
+
+  - id: owner-drive-path
+    pattern: '[A-Za-z]:\\Users\\'
+    ci: false
+    severity: high
+    message: 'Machine-specific user directory path (paths must be derived from the environment, never hardcoded)'
+    # scoped like the other personal/zone rules: skills docs carry placeholder
+    # paths (C:\Users\<user>\...) by design; real owner paths are removed at
+    # vendor time by the mandatory sanitize pass (scripts/vendor-skills.ps1).
+    scope: 'vault-template/**,audit/fixtures/**,00-captura/**,08-filmes/**,10-clientes/**,20-projetos/**,28-books/**,28-filmes/**,30-conhecimento/**,30-sistema/**,40-pessoal/**,40-projetos/**,50-conhecimento/**,50-sistema/**,60-agent-knowledge/**,90-arquivo/**,MOCs/**,TaskNotes/**,scratch/**,.obsidian/**,Mapa.md'
+
+  - id: owner-drive-root
+    pattern: '[A-Za-z]:[/\\\\]DRIVE'
+    ci: false
+    severity: high
+    message: 'Machine-specific asset-drive path (drive letter + owner folder name must be a placeholder)'
+    # Same rationale and scope as owner-drive-path above: a shipped file must derive
+    # the drive from the environment, never hardcode this machine's layout. Added
+    # 2026-10-10 - the existing rule covers C:\\Users\\ only, and the asset drive
+    # (E:/DRIVE) was measured in 33 lines across 25 shipping files, invisible to the
+    # gate. Redacted at build time by the shared pairs in template-ops.yaml.
+    scope: 'vault-template/**,audit/fixtures/**,00-captura/**,08-filmes/**,10-clientes/**,20-projetos/**,28-books/**,28-filmes/**,30-conhecimento/**,30-sistema/**,40-pessoal/**,40-projetos/**,50-conhecimento/**,50-sistema/**,60-agent-knowledge/**,90-arquivo/**,MOCs/**,TaskNotes/**,scratch/**,.obsidian/**,Mapa.md'
+
+  # ---- (b2) client-name backstop (2026-10-10; closes follow-up 2.7) ------------
+  # WHY a rule and not just a personal-term scope change: the personal/zone rules
+  # are scoped to the vault skeleton because vendored skills legitimately name
+  # vault ZONES in operational prose. CLIENT NAMES are different - a distributable
+  # skill must never name a client, in ANY tree. The gap was measured live: a
+  # client name planted under skills/ scanned 0 hits, because personal_terms_scope
+  # excludes skills/** (widening that scope wholesale would have fired 276 term
+  # hits across 190 files - mostly legitimate prose about the owner's own tooling).
+  # This rule is scoped to the DISTRIBUTED trees (skills/** + vault-template/**)
+  # and matches only client names, so it catches the real leak without the false
+  # positives the broad personal rules would produce. The vendor sanitize pass
+  # (scripts/vendor-skills.ps1) redacts these same terms at copy time; this rule
+  # is the backstop that proves the pass ran.
+  - id: client-name-leak
+    pattern: '(?i)(^|[^A-Za-z0-9])(camila|camilla|gonda|tarrafa|lagostin|leprevost|camillagonda|camillakan|lagostinhub)([^A-Za-z0-9]|$)'
+    ci: false
+    severity: critical
+    message: 'Client name in a distributable file (must be a placeholder; vendor sanitize redacts these at copy time)'
+    # Dual-form scope (same convention as the allowlist above): paths are relative
+    # to the scan TARGET. The repo-root gate sees 'skills/...' and
+    # 'vault-template/...'; a direct '-Target skills' run sees 'hermes-tree/...',
+    # 'user-level/...', 'gab-contributions/...'. All forms required.
+    # (The glob matcher supports only exact paths and 'dir/**' prefixes - a bare
+    # '**' does NOT match everything, hence the per-tree enumeration.)
+    scope: 'skills/**,vault-template/**,hermes-tree/**,user-level/**,gab-contributions/**,audit/fixtures/**,00-captura/**,08-filmes/**,10-clientes/**,20-projetos/**,28-books/**,28-filmes/**,30-conhecimento/**,30-sistema/**,40-pessoal/**,40-projetos/**,50-conhecimento/**,50-sistema/**,60-agent-knowledge/**,90-arquivo/**,MOCs/**,TaskNotes/**,scratch/**,.obsidian/**,Mapa.md'
+
+  # ---- (b) personal/client terms come from personal-terms.yaml (same dir) ------
+  # Each term becomes an effective rule with id "personal-term:<term>" at runtime.
+  # Fixtures in audit/fixtures/ prove that every one of those terms fires (task 2.4).
+
+# Line-level exemptions: a line matching ANY of these is never reported, by any rule.
+# Purpose: install-time PLACEHOLDER values are not secrets. Config templates ship with
+# placeholders (never values); the gate must not block placeholder-shaped assignments.
+# POSIX ERE, same dialect contract as rules.
+#
+# forge-hardening (task 1.3) - placeholder/doc-example shapes, fixture-checked:
+# every shape below was measured live over skills/ (scan -NoAllowlist), manually
+# verified as documentation material (never a live credential), and given one or
+# more lines in audit/fixtures/exempt-placeholders.md - the scan of THAT file with
+# -NoAllowlist must exit 0, proving each exemption is load-bearing and safe (it
+# only silences shapes a real credential never takes).
+exemptions:
+  # ---- pre-existing: install-time placeholder assignments -----------------------
+  - '__[A-Z][A-Z0-9_]*__'
+  - '\{env:[A-Za-z0-9_]+\}'
+  # ---- forge-hardening: verified doc-example shapes -----------------------------
+  # AWS documentation's canonical example access key id (never a real credential).
+  - 'AKIAIOSFODNN7EXAMPLE'
+  # Runs of x as placeholder token bodies (sk-xxxx, ghp_xxxx, comfyui-xxxx);
+  # also covers the "Bearer sk-xxx..." doc shapes (the token body is an x-run).
+  - '[A-Za-z0-9_-]{0,40}[xX]{4,}'
+  # CSS custom properties named --sk-* (design-template skill docs: focus/body-link
+  # color tokens); a secret shape never starts with a CSS custom property.
+  - '--sk-[a-z0-9-]+'
+  # Python env lookups: the "value" is an env var NAME, never a credential.
+  - 'os\.getenv\('
+  # your-key-style placeholder values in an assignment (your_api_key_here,
+  # your-api-key, pat_your_token_here, ntn_your_key_here, your-stability-ai-key...);
+  # anchored on the assignment so prose mentioning "your key" is not silenced.
+  - 'your[_-]?api[_-]?key[_-]?here'
+  - '[=][[:space:]]*["'']?[A-Za-z0-9_-]*your[-_][A-Za-z0-9_-]*'
+  # Obvious non-secret placeholder values in an assignment (literally spelled so).
+  - '[=][[:space:]]*["'']?(not-needed|<uuid>|abcdefgh-ijkl-mnop-qrst-uvwxyz)'
+  # Redacted/truncated values: an ellipsis inside a token-ish value (sk-...,
+  # sk-proj-..., comfyui-..., sk-pro...BbwA, OPENROUTER_API_KEY=...) - the docs
+  # idiom for "abridged"; a live credential is never elided.
+  - 'sk-[A-Za-z0-9_-]*\.\.\.'
+  - '[A-Za-z0-9]-\.\.\.'
+  - '[=][[:space:]]*\.\.\.'
+  # Value is a variable/expression reference containing "api_key" (self.api_key,
+  # api_key=api_key, "api_key": self.api_key, {"xi-api-key": api_key, ...},
+  # ELEVENLABS_API_KEY=ELEVENLABS_API_KEY,
+  # OPENAI_API_KEY=process.env.AZURE_OPENAI_API_KEY): code/name material.
+  - '[A-Za-z_]*api[_-]?key[A-Za-z_]*["'']?[[:space:]]*[:=][[:space:]]*["'']?[A-Za-z_."]*api[_-]?key[A-Za-z_."]*'
+  # Env-var NAME documentation: an assignment whose value is empty / a comment /
+  # a comma / a closing paren / a backtick / a URL in parens (XAI_API_KEY=
+  # (https://...), MOONSHOT_API_KEY=, `X_API_KEY=`, API_KEY=`,). Quote characters
+  # are deliberately NOT in the class so api_key='real' still reports.
+  - '[A-Za-z_]*api[_-]?key[A-Za-z_]*[[:space:]]*=[[:space:]]*($|[#,)`]|[(]https?://)'
+  # Header/assignment whose value is a $VAR reference (X-API-Key: $COMFY_CLOUD_API_KEY)
+  # or a quoted-JSON $VAR reference ("api_key": "$NVIDIA_API_KEY") - both are env
+  # lookups documented as names, never credential values. Anchored still on the key
+  # name + colon so prose mentioning "$VAR" is not silenced.
+  - 'api[_-]?key["'']?[[:space:]]*[:=][[:space:]]*["'']?\$[A-Za-z_]'
+  # Python membership-test code: a string literal "OPENROUTER_API_KEY=" checked
+  # against a line variable (if "VAR=" in line ...). The "value" between the = and
+  # the closing quote is code syntax, never a credential.
+  - '["'']?[A-Za-z0-9_]+=["'']?[[:space:]]+in[[:space:]]+line'
+  # Bearer header whose token body is a $VAR reference (curl -H "Authorization:
+  # Bearer $KEY" ...) - the token is an env lookup documented as a name.
+  - 'bearer[[:space:]]+["'']?\$[A-Za-z_]'
+  # Possessive English prose diary mention (book texts: "her father's diary",
+  # "Karin's diary") - a common noun in craft/book prose, never a personal-zone
+  # note reference. Curly apostrophe U+2019 as used in the book extractions.
+  # Standalone diary/diario refs (real note pointers) still fire.
+  - '[A-Za-z][’]s[[:space:]]+[Dd]iary'
+  # GitHub Actions secret references: ${{ secrets.NAME }} is a lookup, not a value.
+  - '\$\{\{[[:space:]]*secrets\.'
+  # Tokens explicitly marked REDACTED inside security-audit documentation.
+  - '[A-Za-z0-9._~-]+_redacted[A-Za-z0-9._~-]*'
+  # Bare token-PREFIX mentions in grep patterns / provider-prefix tables (a real
+  # token always continues with token characters right after the prefix).
+  - 'sk-ant-api03-($|[^A-Za-z0-9])'
+  - 'github_pat_($|[^A-Za-z0-9_])'
+  - 'xox[baprs]-($|[^A-Za-z0-9])'
+  # Fake provider slug in omniroute's placeholder-discard example list.
+  - 'sk-ant-ridewire'
+
+# Allowlist: paths (relative to the scan target, forward slashes) the gate never flags.
+# Supported forms: exact file path, or "dir/**" (everything under dir, non-recursive-safe).
+# Justifications:
+#   audit/rules.yaml, audit/personal-terms.yaml, audit/zone-map.yaml
+#       - the rule data itself names the shapes/zones it detects; it IS the blocklist
+#   audit/placeholder-packs/**
+#       - shipped placeholder shells reference zone tokens and generic pack text by design
+#   audit/fixtures/**
+#       - fake personal-looking corpus proving the gate (task 2.4); the ONLY place such
+#         strings may live. Proof runs use -NoAllowlist / --no-allowlist to scan it raw.
+#         With per-rule scope (forge-hardening), the fire-proof passes the fixture paths
+#         as repo-relative paths via --paths-file so the personal/zone rules (scoped to
+#         audit/fixtures/**) stay eligible; audit/fixtures/exempt-placeholders.md is the
+#         proof corpus for the placeholder exemptions (must scan 0-hit, -NoAllowlist).
+#   sandbox/**
+#       - git-ignored scratch output of installer sandbox runs (generated trees with
+#         placeholder values). Never tracked, so the pre-commit gate never sees it.
+#   openspec/**
+#       - governance docs: the change spec/config deliberately name excluded zones and
+#         threat shapes (diary patterns, past incidents) as rules of the change; human-
+#         reviewed, not gated.
+allowlist:
+  - 'audit/rules.yaml'
+  - 'audit/personal-terms.yaml'
+  - 'audit/zone-map.yaml'
+  - 'audit/scan-personal-data.sh'
+  - 'audit/scan-personal-data.ps1'
+  - 'audit/placeholder-packs/**'
+  - 'audit/fixtures/**'
+  - 'sandbox/**'
+  - 'openspec/**'
+  # ---- vault skeleton structural shells (task 3.1) --------------------------------
+  # The skeleton's EXCLUDED-zone shells are generated ONLY from placeholder packs:
+  # each dir holds exactly 'Placeholder - <zone>' + 'Context Pack - <zone>' (em dash),
+  # so zone tokens appear as STRUCTURE (note titles/links), never as local content.
+  # Their names are mandated by design decision 2 ([[Placeholder - <zone>]]), so the
+  # tokens cannot be rewritten away. No real content can ever land in these dirs:
+  # the build (scripts/build-skeleton.ps1) only ever writes the two shell files there.
+  # Two scan contexts need both path forms:
+  #   'vault-template/...' -> gate run against the REPO ROOT (pre-commit / forge-refresh)
+  #   '<zone>/...'         -> gate run directly against the skeleton dir (-Target vault-template)
+  - 'vault-template/10-clientes/**'
+  - 'vault-template/20-projetos/**'
+  - 'vault-template/40-pessoal/**'
+  - 'vault-template/28-books/**'
+  - 'vault-template/Mapa.md'
+  - '10-clientes/**'
+  - '20-projetos/**'
+  - '40-pessoal/**'
+  - 'Mapa.md'
+  # ---- vault skeleton convention notes (task 3.1) ---------------------------------
+  # GNNSS Vault - Operating Rules.md and Tag Taxonomy.md are the vault's structural
+  # methodology docs: their zone tokens (00-captura/, 10-clientes/, 20-projetos/,
+  # 40-pessoal/, 90-arquivo/) and diary-zone references are the Johnny.Decimal
+  # taxonomy and journaling policy itself (same category as the placeholder shells
+  # above), not local content. Client names inside them are redacted at build time
+  # (audit/template-ops.yaml) and the build output is verified 0-hit for every other
+  # rule. Scope kept minimal (2 files, not the conventions dir) so the gate still
+  # scans the rest of 55-convencoes fully. Both scan contexts need both path forms:
+  #   'vault-template/...' -> gate run against the REPO ROOT (pre-commit/forge-refresh)
+  #   '<zone>/...'         -> gate run directly against the skeleton dir (-Target vault-template)
+  - 'vault-template/50-sistema/55-convencoes/GNNSS Vault - Operating Rules.md'
+  - 'vault-template/50-sistema/55-convencoes/Tag Taxonomy.md'
+  - '50-sistema/55-convencoes/GNNSS Vault - Operating Rules.md'
+  - '50-sistema/55-convencoes/Tag Taxonomy.md'
+   # 52.22-brain-unificado.md (fix wave): canonical architecture note whose ASCII
+   # zone folder map (00-captura/, 10-clientes/, 20-projetos/, 40-pessoal/,
+   # 90-arquivo/) and the Obsidian<->OpenViking mapping table teach the same
+   # Johnny.Decimal structure as Operating Rules/Tag Taxonomy - structural tokens,
+   # not local content. Client slugs and owner vault path inside it are redacted at
+   # build time (audit/template-ops.yaml) by the shared pairs, like the two
+   # convention docs above. Both scan contexts need both path forms.
+  - 'vault-template/50-sistema/52-agent-config/52.22-brain-unificado.md'
+  - '50-sistema/52-agent-config/52.22-brain-unificado.md'
+  # ---- vendored skill trees (forge-hardening tasks 1.3; supersedes tasks 5.2-5.4) --
+  # The former wholesale allowlist entries (skills/hermes-tree/**, skills/user-level/
+  # + 5 per-skill entries + MANIFEST/manifest.json, in both path forms) are REMOVED:
+  # the allowlist inertized ALL rules on those paths, leaving ~430 of 481 skills
+  # ungated for secret shapes. Since forge-hardening:
+  #   - secret-shape rules are ACTIVE on every skills path (no scope);
+  #   - personal-term and zone rules are SCOPED to vault-template/ + fixtures
+  #     (personal_terms_scope + per-rule scope above), so the 249 personal/zone
+  #     hits measured across skills/ no longer fire without any path being exempt;
+  #   - the 144 secret-rule hits measured on the drifted trees were verified line
+  #     by line as documentation examples / placeholder shapes (zero real secrets)
+  #     and are covered by the fixture-checked exemptions above; proof:
+  #     audit/fixtures/exempt-placeholders.md scans 0-hit with -NoAllowlist.
+  # The vendor pipeline (scripts/vendor-skills.ps1) now sanitizes owner-identifying
+  # content in the same run as the copy, so re-vendoring cannot regress this state.
+  # ---- local SDD working notes (gitignored; same rationale as sandbox/) ------------
+  # Briefs/reports of the subagent-driven loop name personal terms and machine
+  # paths by nature; never tracked, so the pre-commit gate never sees them. This
+  # entry keeps the full-tree forge-refresh gate green.
+  - '.superpowers/**'
+  # ---- repo governance / dual-entry docs (fix wave) --------------------------------
+  # Repo-root governance docs that must name vault zones and machine systems by
+  # design (same rationale as openspec/**): AGENTS.md states the dual-entry
+  # contract and points at the vault project note by zone path; docs/forge-log.md
+  # is the repo-side ledger of that obligation (zone paths plus the beatstep/
+  # onedrive systems it records); docs/agents/issue-tracker.md documents the
+  # tracker workflow by zone path. Human-reviewed governance, not personal
+  # content. Exact paths only - the rest of docs/ stays fully gated.
+  - 'AGENTS.md'
+  - 'docs/forge-log.md'
+  - 'docs/agents/issue-tracker.md'
+  # audit/template-ops.yaml (fix wave): the build-time REDACTION TABLE itself
+  # (task 3.2). Its whole job is to map real client names/paths/diary wording to
+  # placeholders, so it must name the terms it redacts - the same "the data IS
+  # the blocklist" category as audit/rules.yaml, audit/personal-terms.yaml and
+  # audit/zone-map.yaml above. Exact path, data file only. (Surfaced by the first
+  # full-repo gate walk after tasks A+B: measured 116 hits, all regex/table data.)
+  - 'audit/template-ops.yaml'
+  # ---- structural navigation indexes (2026-10-10 zone refresh) --------------------
+  # Same category as GNNSS Vault - Operating Rules.md / Tag Taxonomy.md above: these
+  # files ARE the vault's own structure map. They list zone paths (10-clientes/,
+  # 20-projetos/, 40-pessoal/) as TABLE ROWS of an index, not as local content, and
+  # the template SHIPS those zones as placeholder shells, so naming them is
+  # structural. Client NAMES inside them are redacted at build time by the shared
+  # pairs (template-ops.yaml) - the allowlist only silences the zone-token rules.
+  # Post-build verification greps these files for every client term (see the
+  # zone-refresh commit); the allowlist is not a licence to ship a name.
+  # Dual-form: repo-root gate + direct -Target vault-template run.
+  - 'vault-template/MOCs/README.md'
+  - 'MOCs/README.md'
+  - 'vault-template/50-sistema/52-agent-config/52.00-agent-config-moc.md'
+  - '50-sistema/52-agent-config/52.00-agent-config-moc.md'
+  - 'vault-template/30-conhecimento/35-second-brain/35.07-moc-brain.md'
+  - '30-conhecimento/35-second-brain/35.07-moc-brain.md'
+  - 'vault-template/50-sistema/57-conhecimento/_fontes/2026-10-02-propagacao-das-correccoes-e-02-e-11.md'
+  - '50-sistema/57-conhecimento/_fontes/2026-10-02-propagacao-das-correccoes-e-02-e-11.md'
+  - 'vault-template/30-conhecimento/32-carreira/cover-letter-campos-que-vaza.md'
+  - '30-conhecimento/32-carreira/cover-letter-campos-que-vaza.md'
