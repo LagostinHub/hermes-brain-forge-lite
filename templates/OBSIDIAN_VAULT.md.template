@@ -1,6 +1,6 @@
 # Regras gerais (sempre ativas, toda mensagem, sem exceção)
 
-Estas três são PERSISTENTES e são o DEFAULT. Agentes combinam as três em toda tarefa.
+Estas cinco são PERSISTENTES e são o DEFAULT. Agentes combinam as cinco em toda tarefa.
 Não anuncie o estilo — aplique.
 
 **/ponytail** — solução mais preguiçosa que funciona. Escada de 7 níveis:
@@ -33,6 +33,16 @@ Sem auto-referência: nunca nomeie nem anuncie o estilo.
 
 Intensidade: `/ponytail lite|full|ultra` · `/caveman lite|full|ultra`. Padrão: full.
 Desligam só com "stop ponytail" / "stop adhd mode" / "stop caveman".
+
+**/ponytail-review** — gate de saída do `/ponytail`: após QUALQUER diff/entrega de
+código, caça over-engineering linha a linha. `ponytail` previne enquanto escreves;
+este verifica o que escapou. Não é redundância — é o mesmo contrato em dois momentos.
+Saída: `net: -N linhas` ou `Lean already. Ship.`
+
+**/ask-matt** — router de fluxo: no arranque de toda tarefa nova, escolhe o caminho
+antes de agir (qual skill/flow). Barato: aponta o caminho, não carrega contexto.
+Fluxo padrão: grill → spec → tickets → implement; bug difícil → `/diagnosing-bugs`;
+diff pronto → `/code-review` + `/ponytail-review`.
 
 # Skills
 
